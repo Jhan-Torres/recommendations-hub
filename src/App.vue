@@ -7,76 +7,50 @@
     <div
       class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200"
     >
-      <!-- Landing Page -->
-      <LandingPage 
+      <LandingPage
         v-if="currentView === 'landing'"
-        @get-started="handleGetStarted" 
+        @get-started="showRecommendations"
         @show-community="showCommunity"
       />
-      
-      <!-- Community Page -->
-      <CommunityPage 
+      <RecommendationsPage
+        v-else-if="currentView === 'recommendations'"
+        @show-community="showCommunity"
+        @back-to-landing="backToLanding"
+      />
+      <CommunityPage
         v-else-if="currentView === 'community'"
         @back-to-app="backToApp"
       />
-      
-      <!-- Main App View (placeholder for now) -->
-      <div v-else-if="currentView === 'app'" class="min-h-screen flex items-center justify-center">
-        <div class="text-center p-8">
-          <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            Main App Coming Soon!
-          </h1>
-          <p class="text-gray-600 dark:text-gray-300 mb-6">
-            This is where the main recommendation management interface will be.
-          </p>
-          <button 
-            @click="backToLanding"
-            class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            Back to Landing
-          </button>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import LandingPage from "./components/LandingPage.vue";
-import CommunityPage from "./components/CommunityPage.vue";
+import { ref } from "vue";
 import { useTheme } from "./composables/useTheme";
+import LandingPage from "./components/LandingPage.vue";
+import RecommendationsPage from "./components/RecommendationsPage.vue";
+import CommunityPage from "./components/CommunityPage.vue";
 
 const { isDark } = useTheme();
+const currentView = ref<"landing" | "recommendations" | "community">("landing");
 
-// View management
-const currentView = ref<'landing' | 'community' | 'app'>('landing')
-
-const handleGetStarted = () => {
-  currentView.value = 'app'
+const showRecommendations = () => {
+  currentView.value = "recommendations";
 };
 
 const showCommunity = () => {
-  currentView.value = 'community'
-};
-
-const backToApp = () => {
-  // If user has recommendations, go to app, otherwise go to landing
-  const hasRecommendations = checkHasRecommendations()
-  currentView.value = hasRecommendations ? 'app' : 'landing'
+  currentView.value = "community";
 };
 
 const backToLanding = () => {
-  currentView.value = 'landing'
+  currentView.value = "landing";
 };
 
-const checkHasRecommendations = () => {
-  try {
-    const stored = localStorage.getItem("recommendations");
-    return stored && JSON.parse(stored).length > 0;
-  } catch {
-    return false;
-  }
+const backToApp = () => {
+  // When coming back from community, go to recommendations if user has data, otherwise landing
+  const hasRecommendations = localStorage.getItem("recommendations");
+  currentView.value = hasRecommendations ? "recommendations" : "landing";
 };
 </script>
 

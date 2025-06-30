@@ -1,44 +1,61 @@
-import { ref, watch, onMounted } from 'vue'
+import { ref, watchEffect } from "vue";
+
+// Global theme state
+const isDark = ref(false);
+let isInitialized = false;
 
 export function useTheme() {
-  const isDark = ref(false)
-
   const toggleTheme = () => {
-    isDark.value = !isDark.value
-  }
+    isDark.value = !isDark.value;
+  };
 
   const updateTheme = (dark: boolean) => {
     if (dark) {
-      document.documentElement.classList.add('dark')
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark')
+      document.documentElement.classList.remove("dark");
     }
-    localStorage.setItem('theme', dark ? 'dark' : 'light')
-  }
+    localStorage.setItem("theme", dark ? "dark" : "light");
+  };
 
   const initTheme = () => {
-    const saved = localStorage.getItem('theme')
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    
-    isDark.value = saved === 'dark' || (!saved && prefersDark)
-    updateTheme(isDark.value)
+    if (isInitialized) return;
+
+    const saved = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+
+    isDark.value = saved === "dark" || (!saved && prefersDark);
+    updateTheme(isDark.value);
+
+    // Listen for system theme changes
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        if (!localStorage.getItem("theme")) {
+          isDark.value = e.matches;
+        }
+      });
+
+    isInitialized = true;
+  };
+
+  // Initialize theme immediately if in browser
+  if (typeof window !== "undefined" && typeof document !== "undefined") {
+    initTheme();
   }
 
-  watch(isDark, updateTheme)
-
-  onMounted(() => {
-    initTheme()
-    
-    // Listen for system theme changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      if (!localStorage.getItem('theme')) {
-        isDark.value = e.matches
-      }
-    })
-  })
+  // Watch for changes and update DOM
+  watchEffect(() => {
+    if (typeof document !== "undefined") {
+      updateTheme(isDark.value);
+    }
+  });
 
   return {
     isDark,
-    toggleTheme
-  }
+    toggleTheme,
+    initTheme,
+  };
 }
