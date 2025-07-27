@@ -16,13 +16,11 @@ import RecommendationCard from "./RecommendationCard.vue";
 import RecommendationModal from "./RecommendationModal.vue";
 import RecommendationDetailModal from "./RecommendationDetailModal.vue";
 import WatchListModal from "../../watchlist/components/WatchListModal.vue";
-import {
-  StatsCard,
-  TabNavigation,
-  FilterButtons,
-  EmptyState,
-  ActionButton,
-} from "../../../shared/ui";
+import StatsCard from "../../../shared/ui/StatsCard.vue";
+import TabNavigation from "../../../shared/ui/TabNavigation.vue";
+import FilterButtons from "../../../shared/ui/FilterButtons.vue";
+import EmptyState from "../../../shared/ui/EmptyState.vue";
+import ActionButton from "../../../shared/ui/ActionButton.vue";
 import { useRecommendations } from "../useRecommendations";
 import { useWatchList } from "../../watchlist/useWatchList";
 import { useSearch } from "../useSearch";
