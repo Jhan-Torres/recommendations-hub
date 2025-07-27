@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { Film, Tv, Sparkles, Star, Trash2, Eye } from "lucide-vue-next";
 import type { Recommendation } from "../model";
 import { useTranslations } from "../../../shared/hooks/useTranslations";
+import { formatDate } from "../../../shared/utils/formatDate";
 
 const props = defineProps<{
   recommendation: Recommendation;
@@ -80,14 +81,6 @@ const getGenreLabel = (genre: string) => {
     animation: t.value("animation"),
   };
   return genreLabels[genre as keyof typeof genreLabels] || genre;
-};
-
-const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(date);
 };
 </script>
 

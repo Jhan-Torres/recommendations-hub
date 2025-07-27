@@ -16,13 +16,18 @@ import RecommendationCard from "./RecommendationCard.vue";
 import RecommendationModal from "./RecommendationModal.vue";
 import RecommendationDetailModal from "./RecommendationDetailModal.vue";
 import WatchListModal from "../../watchlist/components/WatchListModal.vue";
-import ThemeToggle from "../../../shared/ui/ThemeToggle.vue";
-import SearchBar from "../../../shared/ui/SearchBar.vue";
-import LanguageSelector from "../../../shared/ui/LanguageSelector.vue";
+import {
+  StatsCard,
+  TabNavigation,
+  FilterButtons,
+  EmptyState,
+  ActionButton,
+} from "../../../shared/ui";
 import { useRecommendations } from "../useRecommendations";
 import { useWatchList } from "../../watchlist/useWatchList";
 import { useSearch } from "../useSearch";
 import { useTranslations } from "../../../shared/hooks/useTranslations";
+import { formatDate } from "../../../shared/utils/formatDate";
 import type { Recommendation } from "../model";
 
 defineEmits<{
@@ -60,6 +65,56 @@ const seriesCount = computed(
 const animeCount = computed(
   () => recommendations.value.filter((r) => r.category === "anime").length
 );
+
+// Stats cards data
+const statsCards = computed(() => [
+  {
+    label: t.value("total"),
+    value: recommendations.value.length,
+    icon: BarChart3,
+    iconBg: "bg-blue-100 dark:bg-blue-900/50",
+    iconColor: "text-blue-600 dark:text-blue-400",
+  },
+  {
+    label: t.value("films"),
+    value: filmCount.value,
+    icon: Film,
+    iconBg: "bg-green-100 dark:bg-green-900/50",
+    iconColor: "text-green-600 dark:text-green-400",
+  },
+  {
+    label: t.value("series"),
+    value: seriesCount.value,
+    icon: Tv,
+    iconBg: "bg-purple-100 dark:bg-purple-900/50",
+    iconColor: "text-purple-600 dark:text-purple-400",
+  },
+  {
+    label: t.value("anime"),
+    value: animeCount.value,
+    icon: Sparkles,
+    iconBg: "bg-blue-100 dark:bg-blue-900/50",
+    iconColor: "text-blue-600 dark:text-blue-400",
+  },
+]);
+
+// Tab navigation data
+const navigationTabs = computed(() => [
+  {
+    id: "recommendations",
+    label: t.value("recommendations"),
+    icon: Star,
+    activeColor: "bg-blue-500",
+    hoverColor: "hover:text-blue-600 dark:hover:text-blue-400",
+  },
+  {
+    id: "watchlist",
+    label: t.value("watchList"),
+    icon: Clock,
+    activeColor: "bg-indigo-500",
+    hoverColor: "hover:text-indigo-600 dark:hover:text-indigo-400",
+  },
+]);
 
 const viewRecommendation = (recommendation: Recommendation) => {
   selectedRecommendation.value = recommendation;
@@ -114,14 +169,6 @@ const getGenreLabel = (genre: string) => {
   };
   return genreLabels[genre as keyof typeof genreLabels] || genre;
 };
-
-const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(date);
-};
 </script>
 
 <template>
@@ -175,34 +222,11 @@ const formatDate = (date: Date) => {
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       <!-- Navigation Tabs -->
       <section class="flex items-center justify-between mb-6 sm:mb-8">
-        <div
-          class="flex space-x-1 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-lg p-1 border border-gray-200/50 dark:border-gray-700/50"
-        >
-          <button
-            @click="activeTab = 'recommendations'"
-            :class="[
-              'px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 flex items-center space-x-1 sm:space-x-2',
-              activeTab === 'recommendations'
-                ? 'bg-blue-500 text-white shadow-lg'
-                : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400',
-            ]"
-          >
-            <Star class="h-3 w-3 sm:h-4 sm:w-4" />
-            <span>{{ t("recommendations") }}</span>
-          </button>
-          <button
-            @click="activeTab = 'watchlist'"
-            :class="[
-              'px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 flex items-center space-x-1 sm:space-x-2',
-              activeTab === 'watchlist'
-                ? 'bg-indigo-500 text-white shadow-lg'
-                : 'text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400',
-            ]"
-          >
-            <Clock class="h-3 w-3 sm:h-4 sm:w-4" />
-            <span>{{ t("watchList") }}</span>
-          </button>
-        </div>
+        <TabNavigation
+          :tabs="navigationTabs"
+          :active-tab="activeTab"
+          @update:active-tab="(value) => activeTab = value as 'recommendations' | 'watchlist'"
+        />
       </section>
 
       <!-- Recommendations Tab -->
@@ -211,139 +235,36 @@ const formatDate = (date: Date) => {
         <div
           class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8"
         >
-          <div
-            class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-xl p-3 sm:p-6 border border-gray-200/50 dark:border-gray-700/50"
-          >
-            <div class="flex items-center justify-between">
-              <div>
-                <p
-                  class="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400"
-                >
-                  {{ t("total") }}
-                </p>
-                <p
-                  class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white"
-                >
-                  {{ recommendations.length }}
-                </p>
-              </div>
-              <div
-                class="p-2 sm:p-3 bg-blue-100 dark:bg-blue-900/50 rounded-lg"
-              >
-                <BarChart3
-                  class="h-4 w-4 sm:h-6 sm:w-6 text-blue-600 dark:text-blue-400"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-xl p-3 sm:p-6 border border-gray-200/50 dark:border-gray-700/50"
-          >
-            <div class="flex items-center justify-between">
-              <div>
-                <p
-                  class="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400"
-                >
-                  {{ t("films") }}
-                </p>
-                <p
-                  class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white"
-                >
-                  {{ filmCount }}
-                </p>
-              </div>
-              <div
-                class="p-2 sm:p-3 bg-green-100 dark:bg-green-900/50 rounded-lg"
-              >
-                <Film
-                  class="h-4 w-4 sm:h-6 sm:w-6 text-green-600 dark:text-green-400"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-xl p-3 sm:p-6 border border-gray-200/50 dark:border-gray-700/50"
-          >
-            <div class="flex items-center justify-between">
-              <div>
-                <p
-                  class="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400"
-                >
-                  {{ t("series") }}
-                </p>
-                <p
-                  class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white"
-                >
-                  {{ seriesCount }}
-                </p>
-              </div>
-              <div
-                class="p-2 sm:p-3 bg-purple-100 dark:bg-purple-900/50 rounded-lg"
-              >
-                <Tv
-                  class="h-4 w-4 sm:h-6 sm:w-6 text-purple-600 dark:text-purple-400"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-xl p-3 sm:p-6 border border-gray-200/50 dark:border-gray-700/50"
-          >
-            <div class="flex items-center justify-between">
-              <div>
-                <p
-                  class="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400"
-                >
-                  {{ t("anime") }}
-                </p>
-                <p
-                  class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white"
-                >
-                  {{ animeCount }}
-                </p>
-              </div>
-              <div
-                class="p-2 sm:p-3 bg-blue-100 dark:bg-blue-900/50 rounded-lg"
-              >
-                <Sparkles
-                  class="h-4 w-4 sm:h-6 sm:w-6 text-blue-600 dark:text-blue-400"
-                />
-              </div>
-            </div>
-          </div>
+          <StatsCard
+            v-for="stat in statsCards"
+            :key="stat.label"
+            :label="stat.label"
+            :value="stat.value"
+            :icon="stat.icon"
+            :icon-bg="stat.iconBg"
+            :icon-color="stat.iconColor"
+          />
         </div>
 
         <!-- Actions and Filters -->
         <div
           class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 sm:mb-8"
         >
-          <button
+          <ActionButton
+            :icon="Plus"
+            :label="t('addRecommendation')"
+            variant="primary"
+            size="md"
+            full-width
             @click="showRecommendationModal = true"
-            class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg font-medium hover:from-blue-600 hover:to-indigo-600 transform hover:scale-105 transition-all duration-200 shadow-lg flex items-center justify-center space-x-2"
-          >
-            <Plus class="h-4 w-4 sm:h-5 sm:w-5" />
-            <span>{{ t("addRecommendation") }}</span>
-          </button>
+            class="sm:w-auto"
+          />
 
-          <div class="flex flex-wrap gap-2">
-            <button
-              v-for="category in categoryFilters"
-              :key="category.value"
-              @click="selectedCategory = category.value"
-              :class="[
-                'px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 flex items-center space-x-1 sm:space-x-2',
-                selectedCategory === category.value
-                  ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg'
-                  : 'bg-white/70 dark:bg-gray-800/70 text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-800 border border-gray-200/50 dark:border-gray-700/50',
-              ]"
-            >
-              <component :is="category.icon" class="h-3 w-3 sm:h-4 sm:w-4" />
-              <span>{{ category.label }}</span>
-            </button>
-          </div>
+          <FilterButtons
+            :filters="categoryFilters"
+            :selected-filter="selectedCategory"
+            @update:selected-filter="selectedCategory = $event"
+          />
         </div>
 
         <!-- Recommendations Grid -->
@@ -361,31 +282,14 @@ const formatDate = (date: Date) => {
         </div>
 
         <!-- Empty State for Recommendations -->
-        <div v-else class="text-center py-12 sm:py-16">
-          <div
-            class="p-6 sm:p-8 bg-white/50 dark:bg-gray-800/50 rounded-xl border border-gray-200/50 dark:border-gray-700/50 max-w-md mx-auto"
-          >
-            <Star
-              class="h-12 w-12 sm:h-16 sm:w-16 mx-auto text-gray-400 mb-4"
-            />
-            <h3
-              class="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2"
-            >
-              {{ t("noRecommendations") }}
-            </h3>
-            <p
-              class="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-4"
-            >
-              {{ t("startAdding") }}
-            </p>
-            <button
-              @click="showRecommendationModal = true"
-              class="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg font-medium hover:from-blue-600 hover:to-indigo-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
-            >
-              {{ t("addFirst") }}
-            </button>
-          </div>
-        </div>
+        <EmptyState
+          v-else
+          :icon="Star"
+          :title="t('noRecommendations')"
+          :description="t('startAdding')"
+          :action-text="t('addFirst')"
+          @action="showRecommendationModal = true"
+        />
       </div>
 
       <!-- Watch List Tab -->
@@ -404,13 +308,15 @@ const formatDate = (date: Date) => {
               {{ t("watchListDescription") }}
             </p>
           </div>
-          <button
+          <ActionButton
+            :icon="Clock"
+            :label="t('addToWatchList')"
+            variant="purple"
+            size="md"
+            full-width
             @click="showWatchListModal = true"
-            class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg font-medium hover:from-indigo-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-200 shadow-lg flex items-center justify-center space-x-2"
-          >
-            <Clock class="h-4 w-4 sm:h-5 sm:w-5" />
-            <span>{{ t("addToWatchList") }}</span>
-          </button>
+            class="sm:w-auto"
+          />
         </div>
 
         <!-- Watch List Table -->
