@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useTheme } from "./composables/useTheme";
-import LandingPage from "./components/LandingPage.vue";
-import RecommendationsPage from "./components/RecommendationsPage.vue";
-import CommunityPage from "./components/CommunityPage.vue";
+import { useTheme } from "./shared/hooks/useTheme";
+import LandingPage from "./features/landing/components/LandingPage.vue";
+import RecommendationsPage from "./features/recommendations/components/RecommendationsPage.vue";
+import CommunityPage from "./features/community/components/CommunityPage.vue";
 
 const { isDark } = useTheme();
 const currentView = ref<"landing" | "recommendations" | "community">("landing");

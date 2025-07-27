@@ -1,34 +1,7 @@
-export interface Recommendation {
-  id: string
-  category: 'film' | 'series' | 'anime'
-  name: string
-  genre: string
-  rating: number // 1-5 stars
-  createdAt: Date
-}
+// Legacy types file - These types are now in their respective feature folders
+// This file is kept for backward compatibility during migration
 
-export interface WatchListItem {
-  id: string
-  category: 'film' | 'series' | 'anime'
-  name: string
-  genre: string
-  priority: 'high' | 'medium' | 'low'
-  notes: string
-  createdAt: Date
-}
-
-export interface CommunityPost {
-  id: string
-  title: string
-  category: 'film' | 'series' | 'anime'
-  name: string
-  genre: string
-  rating: number // 1-5 stars
-  author: string
-  description: string
-  likes: number
-  comments: number
-  createdAt: Date
-  isLiked: boolean
-  isSaved: boolean
-}
+// Import and re-export from features for backward compatibility
+export type { Recommendation } from "../features/recommendations/model";
+export type { WatchListItem } from "../features/watchlist/model";
+export type { CommunityPost } from "../features/community/model";
