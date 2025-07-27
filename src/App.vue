@@ -1,30 +1,3 @@
-<template>
-  <div
-    id="app"
-    class="min-h-screen transition-colors duration-200"
-    :class="isDark ? 'dark' : ''"
-  >
-    <div
-      class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200"
-    >
-      <LandingPage
-        v-if="currentView === 'landing'"
-        @get-started="showRecommendations"
-        @show-community="showCommunity"
-      />
-      <RecommendationsPage
-        v-else-if="currentView === 'recommendations'"
-        @show-community="showCommunity"
-        @back-to-landing="backToLanding"
-      />
-      <CommunityPage
-        v-else-if="currentView === 'community'"
-        @back-to-app="backToApp"
-      />
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref } from "vue";
 import { useTheme } from "./composables/useTheme";
@@ -53,6 +26,33 @@ const backToApp = () => {
   currentView.value = hasRecommendations ? "recommendations" : "landing";
 };
 </script>
+
+<template>
+  <div
+    id="app"
+    class="min-h-screen transition-colors duration-200"
+    :class="isDark ? 'dark' : ''"
+  >
+    <main
+      class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200"
+    >
+      <LandingPage
+        v-if="currentView === 'landing'"
+        @get-started="showRecommendations"
+        @show-community="showCommunity"
+      />
+      <RecommendationsPage
+        v-else-if="currentView === 'recommendations'"
+        @show-community="showCommunity"
+        @back-to-landing="backToLanding"
+      />
+      <CommunityPage
+        v-else-if="currentView === 'community'"
+        @back-to-app="backToApp"
+      />
+    </main>
+  </div>
+</template>
 
 <style>
 @import "./index.css";

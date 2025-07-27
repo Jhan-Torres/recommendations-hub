@@ -1,3 +1,129 @@
+<script setup lang="ts">
+import { ref, computed } from "vue";
+import {
+  Film,
+  Tv,
+  Sparkles,
+  Star,
+  Clock,
+  Plus,
+  BarChart3,
+  Users,
+  Check,
+  Trash2,
+} from "lucide-vue-next";
+import RecommendationCard from "./RecommendationCard.vue";
+import RecommendationModal from "./RecommendationModal.vue";
+import RecommendationDetailModal from "./RecommendationDetailModal.vue";
+import WatchListModal from "./WatchListModal.vue";
+import ThemeToggle from "./ThemeToggle.vue";
+import SearchBar from "./SearchBar.vue";
+import LanguageSelector from "./LanguageSelector.vue";
+import { useRecommendations } from "../composables/useRecommendations";
+import { useWatchList } from "../composables/useWatchList";
+import { useSearch } from "../composables/useSearch";
+import { useTranslations } from "../composables/useTranslations";
+import type { Recommendation } from "../types";
+
+defineEmits<{
+  "show-community": [];
+  "back-to-landing": [];
+}>();
+
+const { t } = useTranslations();
+const { recommendations, addRecommendation, deleteRecommendation } =
+  useRecommendations();
+const { watchList, addToWatchList, deleteWatchListItem, markAsWatched } =
+  useWatchList();
+const { searchQuery, selectedCategory, filteredRecommendations } =
+  useSearch(recommendations);
+
+const activeTab = ref<"recommendations" | "watchlist">("recommendations");
+const showRecommendationModal = ref(false);
+const showWatchListModal = ref(false);
+const showDetailModal = ref(false);
+const selectedRecommendation = ref<Recommendation | null>(null);
+
+const categoryFilters = computed(() => [
+  { value: "all", label: t.value("all"), icon: BarChart3 },
+  { value: "film", label: t.value("films"), icon: Film },
+  { value: "series", label: t.value("series"), icon: Tv },
+  { value: "anime", label: t.value("anime"), icon: Sparkles },
+]);
+
+const filmCount = computed(
+  () => recommendations.value.filter((r) => r.category === "film").length
+);
+const seriesCount = computed(
+  () => recommendations.value.filter((r) => r.category === "series").length
+);
+const animeCount = computed(
+  () => recommendations.value.filter((r) => r.category === "anime").length
+);
+
+const viewRecommendation = (recommendation: Recommendation) => {
+  selectedRecommendation.value = recommendation;
+  showDetailModal.value = true;
+};
+
+const getCategoryStyles = (category: string) => {
+  const styles = {
+    film: {
+      bg: "bg-green-100 dark:bg-green-900/50",
+      text: "text-green-600 dark:text-green-400",
+      icon: Film,
+    },
+    series: {
+      bg: "bg-purple-100 dark:bg-purple-900/50",
+      text: "text-purple-600 dark:text-purple-400",
+      icon: Tv,
+    },
+    anime: {
+      bg: "bg-blue-100 dark:bg-blue-900/50",
+      text: "text-blue-600 dark:text-blue-400",
+      icon: Sparkles,
+    },
+  };
+  return styles[category as keyof typeof styles] || styles.film;
+};
+
+const getPriorityColor = (priority: string) => {
+  const colors = {
+    high: "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400",
+    medium:
+      "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400",
+    low: "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400",
+  };
+  return colors[priority as keyof typeof colors] || colors.medium;
+};
+
+const getGenreLabel = (genre: string) => {
+  const genreLabels = {
+    action: t.value("action"),
+    adventure: t.value("adventure"),
+    comedy: t.value("comedy"),
+    drama: t.value("drama"),
+    fantasy: t.value("fantasy"),
+    horror: t.value("horror"),
+    mystery: t.value("mystery"),
+    romance: t.value("romance"),
+    "sci-fi": t.value("sciFi"),
+    thriller: t.value("thriller"),
+    documentary: t.value("documentary"),
+    animation: t.value("animation"),
+  };
+  return genreLabels[genre as keyof typeof genreLabels] || genre;
+};
+
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(date);
+};
+</script>
+
 <template>
   <div
     class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 dark:from-gray-900 dark:via-blue-900/20 dark:to-gray-800"
@@ -23,7 +149,7 @@
               {{ t("appName") }}
             </h1>
           </button>
-          <div class="flex items-center space-x-2 sm:space-x-4">
+          <nav class="flex items-center space-x-2 sm:space-x-4">
             <div class="hidden sm:block">
               <SearchBar v-model="searchQuery" />
             </div>
@@ -37,7 +163,7 @@
 
             <LanguageSelector />
             <ThemeToggle />
-          </div>
+          </nav>
         </div>
         <!-- Mobile Search Bar -->
         <div class="sm:hidden pb-3">
@@ -48,7 +174,7 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       <!-- Navigation Tabs -->
-      <div class="flex items-center justify-between mb-6 sm:mb-8">
+      <section class="flex items-center justify-between mb-6 sm:mb-8">
         <div
           class="flex space-x-1 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-lg p-1 border border-gray-200/50 dark:border-gray-700/50"
         >
@@ -77,7 +203,7 @@
             <span>{{ t("watchList") }}</span>
           </button>
         </div>
-      </div>
+      </section>
 
       <!-- Recommendations Tab -->
       <div v-if="activeTab === 'recommendations'">
@@ -458,130 +584,3 @@
     />
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, computed } from "vue";
-import {
-  Film,
-  Tv,
-  Sparkles,
-  Star,
-  Clock,
-  Plus,
-  BarChart3,
-  Users,
-  ArrowLeft,
-  Check,
-  Trash2,
-} from "lucide-vue-next";
-import RecommendationCard from "./RecommendationCard.vue";
-import RecommendationModal from "./RecommendationModal.vue";
-import RecommendationDetailModal from "./RecommendationDetailModal.vue";
-import WatchListModal from "./WatchListModal.vue";
-import ThemeToggle from "./ThemeToggle.vue";
-import SearchBar from "./SearchBar.vue";
-import LanguageSelector from "./LanguageSelector.vue";
-import { useRecommendations } from "../composables/useRecommendations";
-import { useWatchList } from "../composables/useWatchList";
-import { useSearch } from "../composables/useSearch";
-import { useTranslations } from "../composables/useTranslations";
-import type { Recommendation } from "../types";
-
-defineEmits<{
-  "show-community": [];
-  "back-to-landing": [];
-}>();
-
-const { t } = useTranslations();
-const { recommendations, addRecommendation, deleteRecommendation } =
-  useRecommendations();
-const { watchList, addToWatchList, deleteWatchListItem, markAsWatched } =
-  useWatchList();
-const { searchQuery, selectedCategory, filteredRecommendations } =
-  useSearch(recommendations);
-
-const activeTab = ref<"recommendations" | "watchlist">("recommendations");
-const showRecommendationModal = ref(false);
-const showWatchListModal = ref(false);
-const showDetailModal = ref(false);
-const selectedRecommendation = ref<Recommendation | null>(null);
-
-const categoryFilters = computed(() => [
-  { value: "all", label: t.value("all"), icon: BarChart3 },
-  { value: "film", label: t.value("films"), icon: Film },
-  { value: "series", label: t.value("series"), icon: Tv },
-  { value: "anime", label: t.value("anime"), icon: Sparkles },
-]);
-
-const filmCount = computed(
-  () => recommendations.value.filter((r) => r.category === "film").length
-);
-const seriesCount = computed(
-  () => recommendations.value.filter((r) => r.category === "series").length
-);
-const animeCount = computed(
-  () => recommendations.value.filter((r) => r.category === "anime").length
-);
-
-const viewRecommendation = (recommendation: Recommendation) => {
-  selectedRecommendation.value = recommendation;
-  showDetailModal.value = true;
-};
-
-const getCategoryStyles = (category: string) => {
-  const styles = {
-    film: {
-      bg: "bg-green-100 dark:bg-green-900/50",
-      text: "text-green-600 dark:text-green-400",
-      icon: Film,
-    },
-    series: {
-      bg: "bg-purple-100 dark:bg-purple-900/50",
-      text: "text-purple-600 dark:text-purple-400",
-      icon: Tv,
-    },
-    anime: {
-      bg: "bg-blue-100 dark:bg-blue-900/50",
-      text: "text-blue-600 dark:text-blue-400",
-      icon: Sparkles,
-    },
-  };
-  return styles[category as keyof typeof styles] || styles.film;
-};
-
-const getPriorityColor = (priority: string) => {
-  const colors = {
-    high: "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400",
-    medium:
-      "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400",
-    low: "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400",
-  };
-  return colors[priority as keyof typeof colors] || colors.medium;
-};
-
-const getGenreLabel = (genre: string) => {
-  const genreLabels = {
-    action: t.value("action"),
-    adventure: t.value("adventure"),
-    comedy: t.value("comedy"),
-    drama: t.value("drama"),
-    fantasy: t.value("fantasy"),
-    horror: t.value("horror"),
-    mystery: t.value("mystery"),
-    romance: t.value("romance"),
-    "sci-fi": t.value("sciFi"),
-    thriller: t.value("thriller"),
-    documentary: t.value("documentary"),
-    animation: t.value("animation"),
-  };
-  return genreLabels[genre as keyof typeof genreLabels] || genre;
-};
-
-const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(date);
-};
-</script>

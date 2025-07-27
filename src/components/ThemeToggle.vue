@@ -1,3 +1,12 @@
+<script setup lang="ts">
+import { Sun, Moon } from 'lucide-vue-next'
+import { useTheme } from '../composables/useTheme'
+import { useTranslations } from '../composables/useTranslations'
+
+const { isDark, toggleTheme } = useTheme()
+const { t } = useTranslations()
+</script>
+
 <template>
   <button
     @click="toggleTheme"
@@ -8,12 +17,3 @@
     <Moon v-else class="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
   </button>
 </template>
-
-<script setup lang="ts">
-import { Sun, Moon } from 'lucide-vue-next'
-import { useTheme } from '../composables/useTheme'
-import { useTranslations } from '../composables/useTranslations'
-
-const { isDark, toggleTheme } = useTheme()
-const { t } = useTranslations()
-</script>
