@@ -151,7 +151,7 @@ const statsData = [
         <div class="flex items-center justify-between h-16">
           <div class="flex items-center space-x-2 sm:space-x-3">
             <img
-              src="/vlur-black-and-white-logo.JPG"
+              src="/vlur-logo.webp"
               alt="Vlur Logo"
               class="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 object-cover rounded-full"
             />
@@ -568,7 +568,7 @@ const statsData = [
         <div class="flex flex-col md:flex-row items-center justify-between">
           <div class="flex items-center space-x-2 sm:space-x-3 mb-4 md:mb-0">
             <img
-              src="/VLUR.png"
+              src="/vlur-logo.webp"
               alt="Vlur Logo"
               class="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 object-cover rounded-full"
             />
