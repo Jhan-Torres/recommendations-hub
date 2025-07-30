@@ -153,7 +153,11 @@ const statsData = [
             <div
               class="p-1 sm:p-1.5 md:p-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg"
             >
-              <Film class="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-white" />
+              <img
+                src="/VLUR.webp"
+                alt="Vlur Logo"
+                class="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 object-contain"
+              />
             </div>
             <h1
               class="text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"
@@ -570,7 +574,11 @@ const statsData = [
             <div
               class="p-1 sm:p-1.5 md:p-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg"
             >
-              <Film class="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-white" />
+              <img
+                src="/VLUR.webp"
+                alt="Vlur Logo"
+                class="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 object-contain"
+              />
             </div>
             <span class="text-base sm:text-lg md:text-xl font-bold">{{
               t("appName")

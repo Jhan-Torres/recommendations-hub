@@ -4,7 +4,7 @@ import { useLanguage } from "./useLanguage";
 const translations = {
   en: {
     // Header
-    appName: "Endurance",
+    appName: "Vlur",
     searchPlaceholder: "Search recommendations...",
     backToHome: "Back to home",
     returnToApp: "Return to App",
@@ -107,7 +107,7 @@ const translations = {
     // CTA
     ctaTitle: "Ready to Get Started?",
     ctaDescription:
-      "Join thousands of entertainment enthusiasts who trust Endurance to organize their recommendations.",
+      "Join thousands of entertainment enthusiasts who trust Vlur to organize their recommendations.",
     startFree: "Start Free Now",
     readyToContinue: "Ready to Continue?",
     continueDescription:
@@ -115,7 +115,7 @@ const translations = {
     backToRecommendations: "Back to Recommendations",
 
     // Footer
-    footerText: "© 2025 Endurance. Built with ❤️ for entertainment lovers.",
+    footerText: "© 2025 Vlur. Built with ❤️ for entertainment lovers.",
 
     // Stats
     total: "Total",
@@ -206,7 +206,7 @@ const translations = {
   },
   es: {
     // Header
-    appName: "Endurance",
+    appName: "Vlur",
     searchPlaceholder: "Buscar recomendaciones...",
     backToHome: "Volver al inicio",
     returnToApp: "Volver a la App",
@@ -310,7 +310,7 @@ const translations = {
     // CTA
     ctaTitle: "¿Listo para Comenzar?",
     ctaDescription:
-      "Únete a miles de entusiastas del entretenimiento que confían en Endurance para organizar sus recomendaciones.",
+      "Únete a miles de entusiastas del entretenimiento que confían en Vlur para organizar sus recomendaciones.",
     startFree: "Comenzar Gratis Ahora",
     readyToContinue: "¿Listo para Continuar?",
     continueDescription:
@@ -319,7 +319,7 @@ const translations = {
 
     // Footer
     footerText:
-      "© 2025 Endurance. Construido con ❤️ para amantes del entretenimiento.",
+      "© 2025 Vlur. Construido con ❤️ para amantes del entretenimiento.",
 
     // Stats
     total: "Total",
