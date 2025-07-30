@@ -150,15 +150,11 @@ const statsData = [
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
           <div class="flex items-center space-x-2 sm:space-x-3">
-            <div
-              class="p-1 sm:p-1.5 md:p-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg"
-            >
-              <img
-                src="/VLUR.webp"
-                alt="Vlur Logo"
-                class="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 object-contain"
-              />
-            </div>
+            <img
+              src="/vlur-black-and-white-logo.JPG"
+              alt="Vlur Logo"
+              class="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 object-cover rounded-full"
+            />
             <h1
               class="text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"
             >
@@ -571,15 +567,11 @@ const statsData = [
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row items-center justify-between">
           <div class="flex items-center space-x-2 sm:space-x-3 mb-4 md:mb-0">
-            <div
-              class="p-1 sm:p-1.5 md:p-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg"
-            >
-              <img
-                src="/VLUR.webp"
-                alt="Vlur Logo"
-                class="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 object-contain"
-              />
-            </div>
+            <img
+              src="/VLUR.png"
+              alt="Vlur Logo"
+              class="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 object-cover rounded-full"
+            />
             <span class="text-base sm:text-lg md:text-xl font-bold">{{
               t("appName")
             }}</span>
