@@ -1,12 +1,29 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { useTheme } from "./shared/hooks/useTheme";
+import { useLanguage } from "./shared/hooks/useLanguage";
+import { useTranslations } from "./shared/hooks/useTranslations";
 import LandingPage from "./features/landing/components/LandingPage.vue";
 import RecommendationsPage from "./features/recommendations/components/RecommendationsPage.vue";
 import CommunityPage from "./features/community/components/CommunityPage.vue";
 
 const { isDark } = useTheme();
+const { currentLanguage } = useLanguage();
+const { t } = useTranslations();
 const currentView = ref<"landing" | "recommendations" | "community">("landing");
+
+// Update document title when language changes
+const updateDocumentTitle = () => {
+  document.title = t.value("documentTitle");
+};
+
+onMounted(() => {
+  updateDocumentTitle();
+});
+
+watch(currentLanguage, () => {
+  updateDocumentTitle();
+});
 
 const showRecommendations = () => {
   currentView.value = "recommendations";

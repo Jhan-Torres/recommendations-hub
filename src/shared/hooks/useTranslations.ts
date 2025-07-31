@@ -5,6 +5,7 @@ const translations = {
   en: {
     // Header
     appName: "Vlur",
+    documentTitle: "Vlur - Your Entertainment Hub",
     searchPlaceholder: "Search recommendations...",
     backToHome: "Back to home",
     returnToApp: "Return to App",
@@ -207,6 +208,7 @@ const translations = {
   es: {
     // Header
     appName: "Vlur",
+    documentTitle: "Vlur - Tu Centro de Entretenimiento",
     searchPlaceholder: "Buscar recomendaciones...",
     backToHome: "Volver al inicio",
     returnToApp: "Volver a la App",
