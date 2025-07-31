@@ -1,5 +1,5 @@
 // Landing page business logic and composables
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
 export const useLanding = () => {
   const isFirstVisit = ref(true);

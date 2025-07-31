@@ -7,12 +7,12 @@ export const useRecommendations = () => {
   const loading = ref(false);
 
   const addRecommendation = (
-    recommendation: Omit<Recommendation, "id" | "createdAt">
+    _recommendation: Omit<Recommendation, "id" | "createdAt">
   ) => {
     // Logic will be implemented here
   };
 
-  const deleteRecommendation = (id: string) => {
+  const deleteRecommendation = (_id: string) => {
     // Logic will be implemented here
   };
 

@@ -10,7 +10,7 @@ export const useCommunity = () => {
   const searchQuery = ref("");
 
   const createPost = (
-    post: Omit<
+    _post: Omit<
       CommunityPost,
       "id" | "createdAt" | "likes" | "comments" | "isLiked" | "isSaved"
     >
@@ -18,15 +18,15 @@ export const useCommunity = () => {
     // Logic will be implemented here
   };
 
-  const likePost = (postId: string) => {
+  const likePost = (_postId: string) => {
     // Logic will be implemented here
   };
 
-  const savePost = (postId: string) => {
+  const savePost = (_postId: string) => {
     // Logic will be implemented here
   };
 
-  const addComment = (postId: string, content: string) => {
+  const addComment = (_postId: string, _content: string) => {
     // Logic will be implemented here
   };
 

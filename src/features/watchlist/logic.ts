@@ -6,15 +6,15 @@ export const useWatchList = () => {
   const watchList = ref<WatchListItem[]>([]);
   const loading = ref(false);
 
-  const addToWatchList = (item: Omit<WatchListItem, "id" | "createdAt">) => {
+  const addToWatchList = (_item: Omit<WatchListItem, "id" | "createdAt">) => {
     // Logic will be implemented here
   };
 
-  const deleteWatchListItem = (id: string) => {
+  const deleteWatchListItem = (_id: string) => {
     // Logic will be implemented here
   };
 
-  const markAsWatched = (id: string) => {
+  const markAsWatched = (_id: string) => {
     // Logic will be implemented here
   };
 
