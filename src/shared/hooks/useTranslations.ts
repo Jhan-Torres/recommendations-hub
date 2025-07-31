@@ -23,7 +23,7 @@ const translations = {
     heroTitle: "Discover & Organize",
     heroSubtitle: "Your Entertainment",
     heroDescription:
-      "Keep track of all your favorite films, series, and anime recommendations in one place. Rate, categorize, and never forget a great recommendation again.",
+      "Keep track of all your favorite films, series and anime recommendations in one place. Rate, categorize and never forget a great recommendation again.",
     getStarted: "Get Started",
     startNow: "Start Now",
     learnMore: "Learn More",
@@ -65,7 +65,7 @@ const translations = {
     joinCommunity: "Join the Community",
     communityHighlightTitle: "Connect with Fellow Entertainment Lovers",
     communityHighlightDescription:
-      "Join thousands of users sharing their favorite discoveries, trending recommendations, and hidden gems.",
+      "Join thousands of users sharing their favorite discoveries, trending recommendations and hidden gems.",
     discoverTrending: "Discover Trending",
     discoverTrendingDesc:
       "Find the most popular recommendations from the community.",
@@ -87,7 +87,7 @@ const translations = {
       "Find any recommendation instantly with our advanced search that looks through names and genres.",
     featureGenresTitle: "Rich Genres",
     featureGenresDesc:
-      "Choose from 12 different genres including Action, Romance, Horror, Sci-Fi, and more.",
+      "Choose from 12 different genres including Action, Romance, Horror, Sci-Fi and more.",
     featureMultilingualTitle: "Multilingual",
     featureMultilingualDesc:
       "Full support for English and Spanish with more languages coming soon.",
@@ -145,7 +145,7 @@ const translations = {
 
     // Watch List
     watchListDescription:
-      "Keep track of movies, series, and anime you want to watch later.",
+      "Keep track of movies, series and anime you want to watch later.",
     addToWatchList: "Add to Watch List",
     addToWatch: "Add to Watch",
     noWatchListItems: "Your watch list is empty",
