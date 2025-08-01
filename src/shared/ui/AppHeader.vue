@@ -77,7 +77,7 @@ const isOnCommunity = computed(() => route.name === "Community");
         </button>
 
         <div class="flex items-center space-x-1 sm:space-x-2">
-          <!-- Landing Page: Show Community and Get Started buttons -->
+          <!-- Landing Page: Show Community and Get Started buttons, or Back to App if has recommendations -->
           <template v-if="isOnLanding">
             <button
               @click="goToCommunity"
@@ -87,15 +87,27 @@ const isOnCommunity = computed(() => route.name === "Community");
               <span class="hidden lg:inline">{{ t("community") }}</span>
             </button>
 
+            <!-- Show Back to App if user has recommendations, otherwise show Get Started -->
             <button
+              v-if="hasRecommendations"
+              @click="goToRecommendations"
+              class="px-2 py-1.5 bg-white/70 text-gray-700 rounded-lg font-medium hover:bg-white transition-all duration-200 border border-gray-200/50 text-xs dark:bg-gray-800/70 dark:text-gray-300 dark:hover:bg-gray-800 dark:border-gray-700/50 sm:px-3 sm:py-2 sm:text-sm flex items-center space-x-1"
+            >
+              <Home class="h-3 w-3 sm:h-4 sm:w-4" />
+              <span class="hidden lg:inline">{{ t("backToApp") }}</span>
+            </button>
+
+            <!-- Show Login button if user doesn't have recommendations -->
+            <button
+              v-else
               @click="goToRecommendations"
               class="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg font-medium hover:from-blue-600 hover:to-indigo-600 transform hover:scale-105 transition-all duration-200 shadow-lg text-xs sm:px-4 sm:py-2 sm:text-sm"
             >
-              {{ hasRecommendations ? t("continueUsing") : t("getStarted") }}
+              {{ t("getStarted") }}
             </button>
           </template>
 
-          <!-- Recommendations Page: Show Community and Back to Home buttons -->
+          <!-- Recommendations Page: Show Community button -->
           <template v-else-if="isOnRecommendations">
             <button
               @click="goToCommunity"
@@ -104,31 +116,16 @@ const isOnCommunity = computed(() => route.name === "Community");
               <Users class="h-3 w-3 sm:h-4 sm:w-4" />
               <span class="hidden lg:inline">{{ t("community") }}</span>
             </button>
-
-            <button
-              @click="goToLanding"
-              class="px-2 py-1.5 bg-white/70 text-gray-700 rounded-lg font-medium hover:bg-white transition-all duration-200 border border-gray-200/50 text-xs dark:bg-gray-800/70 dark:text-gray-300 dark:hover:bg-gray-800 dark:border-gray-700/50 sm:px-3 sm:py-2 sm:text-sm flex items-center space-x-1"
-            >
-              <Home class="h-3 w-3 sm:h-4 sm:w-4" />
-              <span class="hidden lg:inline">{{ t("backToHome") }}</span>
-            </button>
           </template>
 
-          <!-- Community Page: Show Recommendations and Back to Home buttons -->
+          <!-- Community Page: Show Back to App button -->
           <template v-else-if="isOnCommunity">
-            <button
-              @click="goToRecommendations"
-              class="px-2 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg font-medium hover:from-blue-600 hover:to-indigo-600 transform hover:scale-105 transition-all duration-200 shadow-lg text-xs sm:px-3 sm:py-2 sm:text-sm"
-            >
-              {{ t("recommendations") }}
-            </button>
-
             <button
               @click="goToLanding"
               class="px-2 py-1.5 bg-white/70 text-gray-700 rounded-lg font-medium hover:bg-white transition-all duration-200 border border-gray-200/50 text-xs dark:bg-gray-800/70 dark:text-gray-300 dark:hover:bg-gray-800 dark:border-gray-700/50 sm:px-3 sm:py-2 sm:text-sm flex items-center space-x-1"
             >
               <Home class="h-3 w-3 sm:h-4 sm:w-4" />
-              <span class="hidden lg:inline">{{ t("backToHome") }}</span>
+              <span class="hidden lg:inline">{{ t("backToApp") }}</span>
             </button>
           </template>
 
