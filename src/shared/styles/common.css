@@ -1,0 +1,108 @@
+/* Common CSS classes for consistent styling across the application */
+
+/* Button variants */
+.btn-primary {
+  @apply px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg font-medium hover:from-blue-600 hover:to-indigo-600 transform hover:scale-105 transition-all duration-200 shadow-lg sm:px-6 sm:py-3;
+}
+
+.btn-secondary {
+  @apply px-4 py-2 bg-white/70 text-gray-700 rounded-lg font-medium hover:bg-white transition-all duration-200 border border-gray-200/50 dark:bg-gray-800/70 dark:text-gray-300 dark:hover:bg-gray-800 dark:border-gray-700/50 sm:px-6 sm:py-3;
+}
+
+.btn-purple {
+  @apply px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-200 shadow-lg sm:px-6 sm:py-3;
+}
+
+.btn-danger {
+  @apply px-4 py-2 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-lg font-medium hover:from-red-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-200 shadow-lg sm:px-6 sm:py-3;
+}
+
+/* Card variants */
+.card-primary {
+  @apply bg-white/70 rounded-xl p-4 border border-gray-200/50 backdrop-blur-sm dark:bg-gray-800/70 dark:border-gray-700/50 sm:p-6;
+}
+
+.card-hover {
+  @apply hover:shadow-xl hover:scale-105 transition-all duration-300;
+}
+
+/* Input variants */
+.input-primary {
+  @apply w-full px-4 py-2 bg-white/70 border border-gray-200/50 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-400 transition-all duration-200 text-sm dark:bg-gray-800/70 dark:border-gray-700/50 dark:text-white sm:text-base;
+}
+
+/* Layout containers */
+.container-main {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.container-content {
+  @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Icon containers */
+.icon-container-sm {
+  @apply w-8 h-8 rounded-lg flex items-center justify-center sm:w-10 sm:h-10;
+}
+
+.icon-container-md {
+  @apply w-12 h-12 rounded-2xl flex items-center justify-center sm:w-16 sm:h-16;
+}
+
+/* Text styles */
+.heading-primary {
+  @apply text-2xl font-bold text-gray-900 mb-4 dark:text-white sm:text-4xl;
+}
+
+.heading-secondary {
+  @apply text-lg font-semibold text-gray-900 mb-3 dark:text-white sm:text-xl sm:mb-4;
+}
+
+.text-body {
+  @apply text-sm text-gray-600 leading-relaxed dark:text-gray-300 sm:text-base;
+}
+
+/* Header navigation */
+.header-nav {
+  @apply sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-gray-200/50 dark:bg-gray-900/80 dark:border-gray-700/50;
+}
+
+.header-container {
+  @apply flex items-center justify-between h-16;
+}
+
+/* Grid layouts */
+.grid-features {
+  @apply grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 sm:gap-8;
+}
+
+.grid-stats {
+  @apply grid grid-cols-2 gap-4 md:grid-cols-4 sm:gap-8;
+}
+
+/* Spacing utilities */
+.section-padding {
+  @apply py-12 sm:py-20;
+}
+
+.content-spacing {
+  @apply mb-8 sm:mb-12;
+}
+
+/* Responsive text sizes */
+.text-hero {
+  @apply text-3xl font-bold leading-tight drop-shadow-sm sm:text-5xl md:text-7xl;
+}
+
+.text-subtitle {
+  @apply text-base leading-relaxed sm:text-xl;
+}
+
+/* Button group layouts */
+.btn-group-vertical {
+  @apply flex flex-col gap-3 sm:flex-row sm:gap-4;
+}
+
+.btn-group-horizontal {
+  @apply flex items-center gap-2 sm:gap-4;
+}

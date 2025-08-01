@@ -10,10 +10,10 @@ const { t } = useTranslations();
 <template>
   <button
     @click="toggleTheme"
-    class="p-1.5 sm:p-2 rounded-lg bg-white/70 dark:bg-gray-800/70 border border-gray-200/50 dark:border-gray-700/50 hover:bg-white dark:hover:bg-gray-800 transition-all duration-200"
+    class="p-1.5 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-white transition-all duration-200 dark:bg-gray-800/70 dark:border-gray-700/50 dark:hover:bg-gray-800 sm:p-2"
     :title="isDark ? t('switchToLight') : t('switchToDark')"
   >
-    <Sun v-if="isDark" class="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500" />
-    <Moon v-else class="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+    <Sun v-if="isDark" class="h-4 w-4 text-yellow-500 sm:h-5 sm:w-5" />
+    <Moon v-else class="h-4 w-4 text-gray-600 sm:h-5 sm:w-5" />
   </button>
 </template>

@@ -87,13 +87,13 @@ const getGenreLabel = (genre: string) => {
 <template>
   <article
     @click="$emit('view', recommendation)"
-    class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-gray-200/50 dark:border-gray-700/50 hover:shadow-xl hover:scale-105 transition-all duration-300 group cursor-pointer"
+    class="card-primary card-hover group cursor-pointer"
   >
     <header class="flex items-start justify-between mb-3 sm:mb-4">
-      <div class="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
+      <div class="flex items-center space-x-2 flex-1 min-w-0 sm:space-x-3">
         <div
           :class="categoryStyles.bg"
-          class="p-1.5 sm:p-2 rounded-lg flex-shrink-0"
+          class="p-1.5 rounded-lg flex-shrink-0 sm:p-2"
         >
           <component
             :is="categoryStyles.icon"
@@ -103,12 +103,12 @@ const getGenreLabel = (genre: string) => {
         </div>
         <div class="min-w-0 flex-1">
           <h3
-            class="font-semibold text-sm sm:text-base text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate"
+            class="font-semibold text-sm text-gray-900 group-hover:text-blue-600 transition-colors truncate dark:text-white dark:group-hover:text-blue-400 sm:text-base"
           >
             {{ recommendation.name }}
           </h3>
           <div
-            class="flex items-center space-x-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400"
+            class="flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400 sm:text-sm"
           >
             <span class="capitalize">{{ recommendation.category }}</span>
             <span>•</span>
@@ -121,7 +121,7 @@ const getGenreLabel = (genre: string) => {
 
       <button
         @click.stop="$emit('delete', recommendation.id)"
-        class="p-1.5 sm:p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-200 opacity-0 group-hover:opacity-100 flex-shrink-0"
+        class="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all duration-200 opacity-0 group-hover:opacity-100 flex-shrink-0 dark:hover:bg-red-900/20 sm:p-2"
       >
         <Trash2 class="h-3 w-3 sm:h-4 sm:w-4" />
       </button>
@@ -134,14 +134,14 @@ const getGenreLabel = (genre: string) => {
             v-for="i in 5"
             :key="i"
             :class="[
-              'h-3 w-3 sm:h-4 sm:w-4 transition-colors duration-200',
+              'h-3 w-3 transition-colors duration-200 sm:h-4 sm:w-4',
               i <= recommendation.rating
                 ? 'text-yellow-400 fill-yellow-400'
                 : 'text-gray-300 dark:text-gray-600',
             ]"
           />
         </div>
-        <span :class="ratingColor" class="text-xs sm:text-sm font-medium">
+        <span :class="ratingColor" class="text-xs font-medium sm:text-sm">
           {{ recommendation.rating }}/5
         </span>
       </div>
@@ -153,13 +153,13 @@ const getGenreLabel = (genre: string) => {
 
     <!-- Hover overlay with view indicator -->
     <div
-      class="absolute inset-0 bg-blue-500/10 dark:bg-blue-400/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+      class="absolute inset-0 bg-blue-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center dark:bg-blue-400/10"
     >
       <div
-        class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg"
+        class="bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg dark:bg-gray-800/90"
       >
         <span
-          class="text-sm font-medium text-gray-900 dark:text-white flex items-center"
+          class="text-sm font-medium text-gray-900 flex items-center dark:text-white"
         >
           <Eye class="h-4 w-4 mr-2" />
           {{ t("viewDetails") }}

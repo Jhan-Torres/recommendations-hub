@@ -42,7 +42,7 @@ const getVariantClasses = (variant: string) => {
 const getSizeClasses = (size: string) => {
   const sizes = {
     sm: "px-3 py-1.5 text-xs",
-    md: "px-4 sm:px-6 py-2 sm:py-3 text-sm",
+    md: "px-4 py-2 text-sm sm:px-6 sm:py-3",
     lg: "px-6 py-3 text-base",
   };
   return sizes[size as keyof typeof sizes] || sizes.md;

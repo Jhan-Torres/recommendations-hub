@@ -1,3 +1,6 @@
+/* Import common component styles */
+@import "./shared/styles/common.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
