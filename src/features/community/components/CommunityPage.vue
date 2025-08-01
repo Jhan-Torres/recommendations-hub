@@ -1,18 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
-import {
-  Sparkles,
-  RefreshCw,
-  TrendingUp,
-  Clock,
-  Star,
-  Grid,
-  Bookmark,
-} from "lucide-vue-next";
+import { RefreshCw, Bookmark } from "lucide-vue-next";
 import CommunityPost from "./CommunityPost.vue";
 import CommunityPostDetailModal from "./CommunityPostDetailModal.vue";
+import CommunityHeader from "./CommunityHeader.vue";
+import CommunityFilters from "./CommunityFilters.vue";
 import AppHeader from "../../../shared/ui/AppHeader.vue";
-import SearchBar from "../../../shared/ui/SearchBar.vue";
 import { useTranslations } from "../../../shared/hooks/useTranslations";
 import type { CommunityPost as CommunityPostType } from "../model";
 
@@ -35,14 +28,6 @@ const selectedFilter = ref("trending");
 const posts = ref<CommunityPostType[]>([]);
 const showDetailModal = ref(false);
 const selectedPost = ref<CommunityPostType | null>(null);
-
-const filterOptions = computed(() => [
-  { value: "trending", label: t.value("trending"), icon: TrendingUp },
-  { value: "recent", label: t.value("recent"), icon: Clock },
-  { value: "top-rated", label: t.value("topRated"), icon: Star },
-  { value: "saved", label: t.value("saved"), icon: Bookmark },
-  { value: "all", label: t.value("all"), icon: Grid },
-]);
 
 const savedPostsCount = computed(() => {
   return posts.value.filter((post) => post.isSaved).length;
@@ -184,59 +169,16 @@ onMounted(() => {
 
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       <!-- Community Header -->
-      <section class="text-center mb-8 sm:mb-12">
-        <div
-          class="inline-flex items-center px-3 sm:px-4 py-2 bg-purple-100/90 dark:bg-purple-900/50 backdrop-blur-sm rounded-full text-purple-600 dark:text-purple-400 text-xs sm:text-sm font-medium mb-4 sm:mb-6 border border-purple-200/50 dark:border-purple-700/50"
-        >
-          <Sparkles class="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
-          {{ t("discoverTogether") }}
-        </div>
-        <h2
-          class="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4"
-        >
-          {{ t("communityTitle") }}
-        </h2>
-        <p
-          class="text-base sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto"
-        >
-          {{ t("communityDescription") }}
-        </p>
-      </section>
+      <CommunityHeader />
 
       <!-- Filter Tabs and Search -->
-      <section class="mb-6 sm:mb-8">
-        <!-- Search Bar -->
-        <div class="mb-4">
-          <SearchBar v-model="searchQuery" />
-        </div>
-
-        <!-- Filter Buttons -->
-        <div class="flex flex-wrap gap-2 justify-center">
-          <button
-            v-for="filter in filterOptions"
-            :key="filter.value"
-            @click="selectedFilter = filter.value"
-            :class="[
-              'px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 flex items-center',
-              selectedFilter === filter.value
-                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                : 'bg-white/70 dark:bg-gray-800/70 text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-800 border border-gray-200/50 dark:border-gray-700/50',
-            ]"
-          >
-            <component
-              :is="filter.icon"
-              class="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2"
-            />
-            {{ filter.label }}
-            <span
-              v-if="filter.value === 'saved' && savedPostsCount > 0"
-              class="ml-1 sm:ml-2 px-1.5 py-0.5 bg-white/20 rounded-full text-xs font-bold"
-            >
-              {{ savedPostsCount }}
-            </span>
-          </button>
-        </div>
-      </section>
+      <CommunityFilters
+        :selected-filter="selectedFilter"
+        :saved-posts-count="savedPostsCount"
+        :search-query="searchQuery"
+        @update:selected-filter="selectedFilter = $event"
+        @update:search-query="searchQuery = $event"
+      />
 
       <!-- Empty State for Saved Posts -->
       <section
