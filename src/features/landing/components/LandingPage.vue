@@ -44,13 +44,7 @@ const hasRecommendations = computed((): boolean => {
     class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 dark:from-gray-900 dark:via-blue-900/20 dark:to-gray-800"
   >
     <!-- Header -->
-    <AppHeader
-      :has-recommendations="hasRecommendations"
-      :show-return-button="true"
-      @get-started="goToRecommendations"
-      @show-community="goToCommunity"
-      @return-to-app="goToRecommendations"
-    />
+    <AppHeader :has-recommendations="hasRecommendations" />
 
     <!-- Main Content -->
     <main>

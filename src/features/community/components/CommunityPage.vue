@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
-import { useRouter } from "vue-router";
 import {
-  Users,
   Sparkles,
-  ArrowLeft,
   RefreshCw,
   TrendingUp,
   Clock,
@@ -14,17 +11,24 @@ import {
 } from "lucide-vue-next";
 import CommunityPost from "./CommunityPost.vue";
 import CommunityPostDetailModal from "./CommunityPostDetailModal.vue";
-import ThemeToggle from "../../../shared/ui/ThemeToggle.vue";
+import AppHeader from "../../../shared/ui/AppHeader.vue";
 import SearchBar from "../../../shared/ui/SearchBar.vue";
-import LanguageSelector from "../../../shared/ui/LanguageSelector.vue";
 import { useTranslations } from "../../../shared/hooks/useTranslations";
 import type { CommunityPost as CommunityPostType } from "../model";
 
-const router = useRouter();
 const { t } = useTranslations();
 
-// Navigation function
-const goBack = () => router.back();
+// Check if user has existing recommendations
+const hasRecommendations = computed((): boolean => {
+  try {
+    const stored = localStorage.getItem("recommendations");
+    if (!stored) return false;
+    const recommendations = JSON.parse(stored);
+    return Array.isArray(recommendations) && recommendations.length > 0;
+  } catch {
+    return false;
+  }
+});
 
 const searchQuery = ref("");
 const selectedFilter = ref("trending");
@@ -176,48 +180,7 @@ onMounted(() => {
     class="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-100 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-800"
   >
     <!-- Header -->
-    <header
-      class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border-b border-gray-200/50 dark:border-gray-700/50"
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <button
-            @click="goBack"
-            class="flex items-center space-x-2 sm:space-x-3 hover:opacity-80 transition-opacity duration-200"
-          >
-            <div
-              class="p-1 sm:p-1.5 md:p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg"
-            >
-              <Users class="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-white" />
-            </div>
-            <h1
-              class="text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
-            >
-              {{ t("community") }}
-            </h1>
-          </button>
-          <nav class="flex items-center space-x-2 sm:space-x-4">
-            <div class="hidden sm:block">
-              <SearchBar v-model="searchQuery" />
-            </div>
-            <LanguageSelector />
-            <ThemeToggle />
-            <button
-              @click="goBack"
-              class="px-3 py-2 bg-white/70 dark:bg-gray-800/70 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 border border-gray-200/50 dark:border-gray-700/50 flex items-center text-xs sm:text-sm"
-            >
-              <ArrowLeft class="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-              <span class="hidden sm:inline">{{ t("backToApp") }}</span>
-              <span class="sm:hidden">{{ t("back") }}</span>
-            </button>
-          </nav>
-        </div>
-        <!-- Mobile Search Bar -->
-        <div class="sm:hidden pb-3">
-          <SearchBar v-model="searchQuery" />
-        </div>
-      </div>
-    </header>
+    <AppHeader :has-recommendations="hasRecommendations" />
 
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       <!-- Community Header -->
@@ -240,31 +203,39 @@ onMounted(() => {
         </p>
       </section>
 
-      <!-- Filter Tabs -->
-      <section class="flex flex-wrap gap-2 mb-6 sm:mb-8 justify-center">
-        <button
-          v-for="filter in filterOptions"
-          :key="filter.value"
-          @click="selectedFilter = filter.value"
-          :class="[
-            'px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 flex items-center',
-            selectedFilter === filter.value
-              ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-              : 'bg-white/70 dark:bg-gray-800/70 text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-800 border border-gray-200/50 dark:border-gray-700/50',
-          ]"
-        >
-          <component
-            :is="filter.icon"
-            class="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2"
-          />
-          {{ filter.label }}
-          <span
-            v-if="filter.value === 'saved' && savedPostsCount > 0"
-            class="ml-1 sm:ml-2 px-1.5 py-0.5 bg-white/20 rounded-full text-xs font-bold"
+      <!-- Filter Tabs and Search -->
+      <section class="mb-6 sm:mb-8">
+        <!-- Search Bar -->
+        <div class="mb-4">
+          <SearchBar v-model="searchQuery" />
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex flex-wrap gap-2 justify-center">
+          <button
+            v-for="filter in filterOptions"
+            :key="filter.value"
+            @click="selectedFilter = filter.value"
+            :class="[
+              'px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 flex items-center',
+              selectedFilter === filter.value
+                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                : 'bg-white/70 dark:bg-gray-800/70 text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-800 border border-gray-200/50 dark:border-gray-700/50',
+            ]"
           >
-            {{ savedPostsCount }}
-          </span>
-        </button>
+            <component
+              :is="filter.icon"
+              class="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2"
+            />
+            {{ filter.label }}
+            <span
+              v-if="filter.value === 'saved' && savedPostsCount > 0"
+              class="ml-1 sm:ml-2 px-1.5 py-0.5 bg-white/20 rounded-full text-xs font-bold"
+            >
+              {{ savedPostsCount }}
+            </span>
+          </button>
+        </div>
       </section>
 
       <!-- Empty State for Saved Posts -->
