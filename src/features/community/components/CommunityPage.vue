@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import {
   Users,
   Sparkles,
@@ -19,11 +20,11 @@ import LanguageSelector from "../../../shared/ui/LanguageSelector.vue";
 import { useTranslations } from "../../../shared/hooks/useTranslations";
 import type { CommunityPost as CommunityPostType } from "../model";
 
-defineEmits<{
-  "back-to-app": [];
-}>();
-
+const router = useRouter();
 const { t } = useTranslations();
+
+// Navigation function
+const goBack = () => router.back();
 
 const searchQuery = ref("");
 const selectedFilter = ref("trending");
@@ -181,7 +182,7 @@ onMounted(() => {
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
           <button
-            @click="$emit('back-to-app')"
+            @click="goBack"
             class="flex items-center space-x-2 sm:space-x-3 hover:opacity-80 transition-opacity duration-200"
           >
             <div
@@ -202,7 +203,7 @@ onMounted(() => {
             <LanguageSelector />
             <ThemeToggle />
             <button
-              @click="$emit('back-to-app')"
+              @click="goBack"
               class="px-3 py-2 bg-white/70 dark:bg-gray-800/70 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 border border-gray-200/50 dark:border-gray-700/50 flex items-center text-xs sm:text-sm"
             >
               <ArrowLeft class="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />

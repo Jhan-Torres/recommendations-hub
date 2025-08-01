@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import RecommendationModal from "./RecommendationModal.vue";
 import RecommendationDetailModal from "./RecommendationDetailModal.vue";
 import WatchListModal from "../../watchlist/components/WatchListModal.vue";
@@ -11,10 +12,11 @@ import { useWatchList } from "../../watchlist/useWatchList";
 import { useSearch } from "../useSearch";
 import type { Recommendation } from "../model";
 
-defineEmits<{
-  "show-community": [];
-  "back-to-landing": [];
-}>();
+const router = useRouter();
+
+// Navigation functions
+const goToCommunity = () => router.push("/community");
+const goToLanding = () => router.push("/");
 
 const { recommendations, addRecommendation, deleteRecommendation } =
   useRecommendations();
@@ -40,8 +42,8 @@ const viewRecommendation = (recommendation: Recommendation) => {
   >
     <!-- Header -->
     <RecommendationsHeader
-      @show-community="$emit('show-community')"
-      @back-to-landing="$emit('back-to-landing')"
+      @show-community="goToCommunity"
+      @back-to-landing="goToLanding"
     />
 
     <main class="max-w-7xl mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-8">

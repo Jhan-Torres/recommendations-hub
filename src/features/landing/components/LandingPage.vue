@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import { useRouter } from "vue-router";
 import AppHeader from "../../../shared/ui/AppHeader.vue";
 import AppFooter from "../../../shared/ui/AppFooter.vue";
 import HeroSection from "./HeroSection.vue";
@@ -8,10 +9,11 @@ import CommunitySection from "./CommunitySection.vue";
 import StatsSection from "./StatsSection.vue";
 import CTASection from "./CTASection.vue";
 
-defineEmits<{
-  "get-started": [];
-  "show-community": [];
-}>();
+const router = useRouter();
+
+// Navigation functions
+const goToRecommendations = () => router.push("/recommendations");
+const goToCommunity = () => router.push("/community");
 
 // Scroll to features section
 const scrollToFeatures = () => {
@@ -45,30 +47,30 @@ const hasRecommendations = computed((): boolean => {
     <AppHeader
       :has-recommendations="hasRecommendations"
       :show-return-button="true"
-      @get-started="$emit('get-started')"
-      @show-community="$emit('show-community')"
-      @return-to-app="$emit('get-started')"
+      @get-started="goToRecommendations"
+      @show-community="goToCommunity"
+      @return-to-app="goToRecommendations"
     />
 
     <!-- Main Content -->
     <main>
       <HeroSection
         :has-recommendations="hasRecommendations"
-        @get-started="$emit('get-started')"
-        @show-community="$emit('show-community')"
+        @get-started="goToRecommendations"
+        @show-community="goToCommunity"
         @scroll-to-features="scrollToFeatures"
       />
 
       <FeaturesSection />
 
-      <CommunitySection @show-community="$emit('show-community')" />
+      <CommunitySection @show-community="goToCommunity" />
 
       <StatsSection />
 
       <CTASection
         :has-recommendations="hasRecommendations"
-        @get-started="$emit('get-started')"
-        @show-community="$emit('show-community')"
+        @get-started="goToRecommendations"
+        @show-community="goToCommunity"
       />
     </main>
 
