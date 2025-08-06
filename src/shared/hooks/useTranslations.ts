@@ -219,7 +219,7 @@ const translations = {
 
     // Navigation
     recommendations: "Recomendaciones",
-    watchList: "Lista de Pendientes",
+    watchList: "Lista para Ver",
 
     // Landing Page
     heroTag: "Tu Centro de Entretenimiento",
@@ -351,9 +351,9 @@ const translations = {
     // Watch List
     watchListDescription:
       "Mantén un registro de películas, series y anime que quieres ver más tarde.",
-    addToWatchList: "Agregar a Lista de Pendientes",
+    addToWatchList: "Agregar a Lista para Ver",
     addToWatch: "Agregar a Ver",
-    noWatchListItems: "Tu lista de pendientes está vacía",
+    noWatchListItems: "Tu lista para ver está vacía",
     startAddingToWatchList:
       "Agrega elementos que quieras ver más tarde para hacer un seguimiento.",
     addFirstWatchListItem: "Agregar Tu Primer Elemento",

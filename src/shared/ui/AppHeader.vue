@@ -121,7 +121,7 @@ const isOnCommunity = computed(() => route.name === "Community");
           <!-- Community Page: Show Back to App button -->
           <template v-else-if="isOnCommunity">
             <button
-              @click="goToLanding"
+              @click="goToRecommendations"
               class="px-2 py-1.5 bg-white/70 text-gray-700 rounded-lg font-medium hover:bg-white transition-all duration-200 border border-gray-200/50 text-xs dark:bg-gray-800/70 dark:text-gray-300 dark:hover:bg-gray-800 dark:border-gray-700/50 sm:px-3 sm:py-2 sm:text-sm flex items-center space-x-1"
             >
               <Home class="h-3 w-3 sm:h-4 sm:w-4" />
