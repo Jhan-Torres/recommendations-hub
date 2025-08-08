@@ -19,7 +19,7 @@
 
 /* Card variants */
 .card-primary {
-  @apply bg-white/70 rounded-xl p-4 border border-gray-200/50 backdrop-blur-sm dark:bg-gray-800/70 dark:border-gray-700/50 sm:p-6;
+  @apply bg-white/70 rounded-xl p-4 border border-gray-200/50 backdrop-blur-sm dark:bg-gray-800/70 dark:border-gray-700/50;
 }
 
 .card-hover {
@@ -105,4 +105,185 @@
 
 .btn-group-horizontal {
   @apply flex items-center gap-2 sm:gap-4;
+}
+
+/* Background animations */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  33% {
+    transform: translateY(-30px) translateX(20px);
+  }
+  66% {
+    transform: translateY(20px) translateX(-10px);
+  }
+}
+
+@keyframes float-reverse {
+  0%,
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  33% {
+    transform: translateY(20px) translateX(-20px);
+  }
+  66% {
+    transform: translateY(-30px) translateX(10px);
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) translateX(15px) scale(1.1);
+  }
+}
+
+@keyframes particle-1 {
+  0% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-100px) translateX(50px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-200px) translateX(100px);
+    opacity: 0;
+  }
+}
+
+@keyframes particle-2 {
+  0% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-80px) translateX(-40px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-160px) translateX(-80px);
+    opacity: 0;
+  }
+}
+
+@keyframes particle-3 {
+  0% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(90px) translateX(60px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(180px) translateX(120px);
+    opacity: 0;
+  }
+}
+
+@keyframes particle-4 {
+  0% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(70px) translateX(-30px);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(140px) translateX(-60px);
+    opacity: 0;
+  }
+}
+
+@keyframes particle-5 {
+  0% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-60px) translateX(80px);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-120px) translateX(160px);
+    opacity: 0;
+  }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 10s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float-slow 12s ease-in-out infinite;
+}
+
+.animate-particle-1 {
+  animation: particle-1 6s ease-out infinite;
+}
+
+.animate-particle-2 {
+  animation: particle-2 8s ease-out infinite 1s;
+}
+
+.animate-particle-3 {
+  animation: particle-3 7s ease-out infinite 2s;
+}
+
+.animate-particle-4 {
+  animation: particle-4 9s ease-out infinite 3s;
+}
+
+.animate-particle-5 {
+  animation: particle-5 5s ease-out infinite 4s;
+}
+
+/* Sparkles badge animations */
+@keyframes border-glow {
+  0%,
+  100% {
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.2);
+  }
+  50% {
+    border-color: rgba(99, 102, 241, 0.8);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+  }
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-10deg) scale(1.1);
+  }
+  50% {
+    transform: rotate(10deg) scale(1);
+  }
+  75% {
+    transform: rotate(-5deg) scale(1.05);
+  }
+}
+
+.animate-border-glow {
+  animation: border-glow 3s ease-in-out infinite;
+}
+
+.animate-sparkle {
+  animation: sparkle 2s ease-in-out infinite;
 }
