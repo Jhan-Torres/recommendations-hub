@@ -73,11 +73,11 @@
 
 /* Grid layouts */
 .grid-features {
-  @apply grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 sm:gap-8;
+  @apply grid grid-cols-1 gap-6 md:grid-cols-2 sm:gap-8;
 }
 
 .grid-stats {
-  @apply grid grid-cols-2 gap-4 md:grid-cols-4 sm:gap-8;
+  @apply grid grid-cols-1 gap-4 md:grid-cols-2 sm:gap-8;
 }
 
 /* Spacing utilities */
@@ -286,4 +286,34 @@
 
 .animate-sparkle {
   animation: sparkle 2s ease-in-out infinite;
+}
+
+/* Sequential feature border animations */
+@keyframes feature-border-glow {
+  0%,
+  20%,
+  100% {
+    border-color: transparent;
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+  10% {
+    border-color: rgba(99, 102, 241, 0.8);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+  }
+}
+
+.animate-feature-border-1 {
+  animation: feature-border-glow 12s ease-in-out infinite;
+}
+
+.animate-feature-border-2 {
+  animation: feature-border-glow 12s ease-in-out infinite 3s;
+}
+
+.animate-feature-border-3 {
+  animation: feature-border-glow 12s ease-in-out infinite 6s;
+}
+
+.animate-feature-border-4 {
+  animation: feature-border-glow 12s ease-in-out infinite 9s;
 }

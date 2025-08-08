@@ -9,6 +9,37 @@ interface Emits {
 defineEmits<Emits>();
 
 const { t } = useTranslations();
+
+// Community features data
+const communityFeatures = [
+  {
+    key: "trending",
+    icon: TrendingUp,
+    iconBg: "bg-purple-100 dark:bg-purple-900/50",
+    iconColor: "text-purple-600 dark:text-purple-400",
+    titleKey: "discoverTrending",
+    descKey: "discoverTrendingDesc",
+    animationClass: "animate-feature-border-1",
+  },
+  {
+    key: "passion",
+    icon: Heart,
+    iconBg: "bg-pink-100 dark:bg-pink-900/50",
+    iconColor: "text-pink-600 dark:text-pink-400",
+    titleKey: "sharePassion",
+    descKey: "sharePassionDesc",
+    animationClass: "animate-feature-border-2",
+  },
+  {
+    key: "save",
+    icon: Bookmark,
+    iconBg: "bg-indigo-100 dark:bg-indigo-900/50",
+    iconColor: "text-indigo-600 dark:text-indigo-400",
+    titleKey: "saveForLater",
+    descKey: "saveForLaterDesc",
+    animationClass: "animate-feature-border-3",
+  },
+];
 </script>
 
 <template>
@@ -39,51 +70,24 @@ const { t } = useTranslations();
 
       <!-- Community Features Grid -->
       <div class="grid grid-cols-1 gap-6 md:grid-cols-3 sm:gap-8">
-        <div class="card-primary text-center">
-          <div
-            class="icon-container-md bg-purple-100 mx-auto mb-4 dark:bg-purple-900/50"
-          >
-            <TrendingUp
-              class="h-6 w-6 text-purple-600 dark:text-purple-400 sm:h-8 sm:w-8"
+        <div
+          v-for="feature in communityFeatures"
+          :key="feature.key"
+          :class="feature.animationClass"
+          class="card-primary text-center"
+        >
+          <div :class="feature.iconBg" class="icon-container-md mx-auto mb-4">
+            <component
+              :is="feature.icon"
+              :class="feature.iconColor"
+              class="h-6 w-6 sm:h-8 sm:w-8"
             />
           </div>
           <h3 class="text-lg font-semibold text-gray-900 mb-2 dark:text-white">
-            {{ t("discoverTrending") }}
+            {{ t(feature.titleKey as any) }}
           </h3>
           <p class="text-sm text-gray-600 dark:text-gray-300">
-            {{ t("discoverTrendingDesc") }}
-          </p>
-        </div>
-
-        <div class="card-primary text-center">
-          <div
-            class="icon-container-md bg-pink-100 mx-auto mb-4 dark:bg-pink-900/50"
-          >
-            <Heart
-              class="h-6 w-6 text-pink-600 dark:text-pink-400 sm:h-8 sm:w-8"
-            />
-          </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2 dark:text-white">
-            {{ t("sharePassion") }}
-          </h3>
-          <p class="text-sm text-gray-600 dark:text-gray-300">
-            {{ t("sharePassionDesc") }}
-          </p>
-        </div>
-
-        <div class="card-primary text-center">
-          <div
-            class="icon-container-md bg-indigo-100 mx-auto mb-4 dark:bg-indigo-900/50"
-          >
-            <Bookmark
-              class="h-6 w-6 text-indigo-600 dark:text-indigo-400 sm:h-8 sm:w-8"
-            />
-          </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2 dark:text-white">
-            {{ t("saveForLater") }}
-          </h3>
-          <p class="text-sm text-gray-600 dark:text-gray-300">
-            {{ t("saveForLaterDesc") }}
+            {{ t(feature.descKey as any) }}
           </p>
         </div>
       </div>

@@ -6,7 +6,6 @@ import AppFooter from "../../../shared/ui/AppFooter.vue";
 import HeroSection from "./HeroSection.vue";
 import FeaturesSection from "./FeaturesSection.vue";
 import CommunitySection from "./CommunitySection.vue";
-import StatsSection from "./StatsSection.vue";
 import CTASection from "./CTASection.vue";
 
 const router = useRouter();
@@ -58,8 +57,6 @@ const hasRecommendations = computed((): boolean => {
       <FeaturesSection />
 
       <CommunitySection @show-community="goToCommunity" />
-
-      <StatsSection />
 
       <CTASection
         :has-recommendations="hasRecommendations"

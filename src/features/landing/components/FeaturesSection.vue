@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import {
-  Star,
-  Search,
-  Palette,
-  Globe,
-  Smartphone,
-  Shield,
-} from "lucide-vue-next";
+import { Star, Search, Smartphone, Shield } from "lucide-vue-next";
 import { useTranslations } from "../../../shared/hooks/useTranslations";
 
 const { t } = useTranslations();
@@ -20,6 +13,7 @@ const featuresData = [
     iconColor: "text-yellow-600 dark:text-yellow-400",
     titleKey: "featureOrganizeTitle",
     descKey: "featureOrganizeDesc",
+    animationClass: "animate-feature-border-1",
   },
   {
     key: "search",
@@ -28,22 +22,7 @@ const featuresData = [
     iconColor: "text-blue-600 dark:text-blue-400",
     titleKey: "featureSearchTitle",
     descKey: "featureSearchDesc",
-  },
-  {
-    key: "genres",
-    icon: Palette,
-    iconBg: "bg-purple-100 dark:bg-purple-900/50",
-    iconColor: "text-purple-600 dark:text-purple-400",
-    titleKey: "featureGenresTitle",
-    descKey: "featureGenresDesc",
-  },
-  {
-    key: "multilingual",
-    icon: Globe,
-    iconBg: "bg-green-100 dark:bg-green-900/50",
-    iconColor: "text-green-600 dark:text-green-400",
-    titleKey: "featureMultilingualTitle",
-    descKey: "featureMultilingualDesc",
+    animationClass: "animate-feature-border-2",
   },
   {
     key: "responsive",
@@ -52,6 +31,7 @@ const featuresData = [
     iconColor: "text-blue-600 dark:text-blue-400",
     titleKey: "featureResponsiveTitle",
     descKey: "featureResponsiveDesc",
+    animationClass: "animate-feature-border-3",
   },
   {
     key: "secure",
@@ -60,6 +40,7 @@ const featuresData = [
     iconColor: "text-indigo-600 dark:text-indigo-400",
     titleKey: "featureSecureTitle",
     descKey: "featureSecureDesc",
+    animationClass: "animate-feature-border-4",
   },
 ];
 </script>
@@ -85,6 +66,7 @@ const featuresData = [
         <div
           v-for="feature in featuresData"
           :key="feature.key"
+          :class="feature.animationClass"
           class="card-primary card-hover group"
         >
           <div

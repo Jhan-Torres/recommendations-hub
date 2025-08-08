@@ -85,12 +85,6 @@ const translations = {
     featureSearchTitle: "Powerful Search",
     featureSearchDesc:
       "Find any recommendation instantly with our advanced search that looks through names and genres.",
-    featureGenresTitle: "Rich Genres",
-    featureGenresDesc:
-      "Choose from 12 different genres including Action, Romance, Horror, Sci-Fi and more.",
-    featureMultilingualTitle: "Multilingual",
-    featureMultilingualDesc:
-      "Full support for English and Spanish with more languages coming soon.",
     featureResponsiveTitle: "Mobile Ready",
     featureResponsiveDesc:
       "Beautiful responsive design that works perfectly on all devices and screen sizes.",
@@ -101,8 +95,6 @@ const translations = {
     // Stats
     statsTitle: "Built for Entertainment Lovers",
     statCategories: "Categories",
-    statGenres: "Genres",
-    statLanguages: "Languages",
     statRatings: "Star Ratings",
 
     // CTA
@@ -289,12 +281,6 @@ const translations = {
     featureSearchTitle: "Búsqueda Poderosa",
     featureSearchDesc:
       "Encuentra cualquier recomendación al instante con nuestra búsqueda avanzada que examina nombres y géneros.",
-    featureGenresTitle: "Géneros Variados",
-    featureGenresDesc:
-      "Elige entre 12 géneros diferentes incluyendo Acción, Romance, Terror, Ciencia Ficción y más.",
-    featureMultilingualTitle: "Multiidioma",
-    featureMultilingualDesc:
-      "Soporte completo para inglés y español con más idiomas próximamente.",
     featureResponsiveTitle: "Optimizado para Móvil",
     featureResponsiveDesc:
       "Diseño responsivo hermoso que funciona perfectamente en todos los dispositivos y tamaños de pantalla.",
@@ -305,8 +291,6 @@ const translations = {
     // Stats
     statsTitle: "Construido para Amantes del Entretenimiento",
     statCategories: "Categorías",
-    statGenres: "Géneros",
-    statLanguages: "Idiomas",
     statRatings: "Calificaciones de Estrellas",
 
     // CTA
