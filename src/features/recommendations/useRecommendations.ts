@@ -1,10 +1,10 @@
 import { ref, watch } from "vue";
-import type { Recommendation } from "./model";
+import type { LegacyRecommendation } from "@/features/recommendations";
 
 const STORAGE_KEY = "recommendations";
 
 export function useRecommendations() {
-  const recommendations = ref<Recommendation[]>([]);
+  const recommendations = ref<LegacyRecommendation[]>([]);
 
   // Load from localStorage
   const loadRecommendations = () => {
@@ -33,9 +33,9 @@ export function useRecommendations() {
 
   // Add recommendation
   const addRecommendation = (
-    recommendation: Omit<Recommendation, "id" | "createdAt">
+    recommendation: Omit<LegacyRecommendation, "id" | "createdAt">
   ) => {
-    const newRecommendation: Recommendation = {
+    const newRecommendation: LegacyRecommendation = {
       ...recommendation,
       id: crypto.randomUUID(),
       createdAt: new Date(),

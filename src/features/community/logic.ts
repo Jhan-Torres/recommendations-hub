@@ -1,6 +1,6 @@
 // Community business logic and composables
 import { ref, computed } from "vue";
-import type { CommunityPost, Comment } from "./model";
+import type { CommunityPost, Comment } from "@/features/community";
 
 export const useCommunity = () => {
   const posts = ref<CommunityPost[]>([]);

@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import { useLanguage } from "./useLanguage";
+import { useLanguage } from "@/shared";
 
 const translations = {
   en: {

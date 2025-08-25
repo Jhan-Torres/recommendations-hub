@@ -1,7 +1,7 @@
 import { ref, computed, type Ref } from "vue";
-import type { Recommendation } from "./model";
+import type { LegacyRecommendation } from "@/features/recommendations";
 
-export function useSearch(recommendations: Ref<Recommendation[]>) {
+export function useSearch(recommendations: Ref<LegacyRecommendation[]>) {
   const searchQuery = ref("");
   const selectedCategory = ref("all");
 

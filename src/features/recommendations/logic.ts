@@ -1,6 +1,6 @@
 // Recommendations business logic and composables
 import { ref, computed } from "vue";
-import type { Recommendation } from "./model";
+import type { Recommendation } from "@/features/recommendations";
 
 export const useRecommendations = () => {
   const recommendations = ref<Recommendation[]>([]);

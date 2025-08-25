@@ -1,5 +1,22 @@
 // WatchList types and state models
+
+// Backend-ready WatchList Item interface
 export interface WatchListItem {
+  id: string;
+  recommendationId: string;
+  userId: string;
+  createdAt: string;
+  recommendation?: {
+    id: string;
+    title: string;
+    description: string;
+    category: string;
+    priority: "low" | "medium" | "high";
+  };
+}
+
+// Legacy WatchList Item interface (for backward compatibility)
+export interface LegacyWatchListItem {
   id: string;
   category: "film" | "series" | "anime";
   name: string;
@@ -12,17 +29,26 @@ export interface WatchListItem {
 
 export interface WatchListStats {
   total: number;
-  pending: number;
-  completed: number;
-  byPriority: {
-    high: number;
-    medium: number;
-    low: number;
+  byRecommendationCategory: {
+    [key: string]: number;
   };
+  recentlyAdded: number;
 }
 
 export interface WatchListState {
   items: WatchListItem[];
   loading: boolean;
-  selectedPriority: string;
+  error: string | null;
+}
+
+// WatchList API types
+export interface AddToWatchListRequest {
+  recommendationId: string;
+}
+
+export interface WatchListResponse {
+  id: string;
+  recommendationId: string;
+  userId: string;
+  createdAt: string;
 }

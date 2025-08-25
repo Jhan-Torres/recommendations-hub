@@ -1,5 +1,5 @@
 import { ref, watch } from "vue";
-import type { WatchListItem } from "./model";
+import type { WatchListItem } from "@/features/watchlist";
 
 const STORAGE_KEY = "watchlist";
 

@@ -1,6 +1,6 @@
 // WatchList business logic and composables
 import { ref, computed } from "vue";
-import type { WatchListItem } from "./model";
+import type { WatchListItem } from "@/features/watchlist";
 
 export const useWatchList = () => {
   const watchList = ref<WatchListItem[]>([]);
