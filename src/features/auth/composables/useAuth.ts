@@ -3,9 +3,19 @@ import { storeToRefs } from "pinia";
 
 export function useAuth() {
   const store = useAuthStore();
-  const { user, token, isLoading, isAuthenticated } = storeToRefs(store);
+  const { user, token, isLoading, isAuthenticated, error } = storeToRefs(store);
 
-  const { login, logout, initializeAuth } = store;
+  const {
+    login,
+    register,
+    logout,
+    initializeAuth,
+    getCurrentUser,
+    updateProfile,
+    clearError,
+    verifyEmail,
+    resendVerificationCode,
+  } = store;
 
   return {
     // State
@@ -13,10 +23,17 @@ export function useAuth() {
     token,
     isLoading,
     isAuthenticated,
+    error,
 
     // Actions
     login,
+    register,
     logout,
     initializeAuth,
+    getCurrentUser,
+    updateProfile,
+    clearError,
+    verifyEmail,
+    resendVerificationCode,
   };
 }

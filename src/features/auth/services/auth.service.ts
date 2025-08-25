@@ -5,6 +5,10 @@ import type {
   LoginCredentials,
   RegisterData,
   AuthResponse,
+  VerifyEmailData,
+  VerifyEmailResponse,
+  ResendCodeResponse,
+  RegisterResponse,
 } from "@/features/auth";
 
 export class AuthService {
@@ -16,10 +20,26 @@ export class AuthService {
     return response.data.data;
   }
 
-  async register(data: RegisterData): Promise<AuthResponse> {
-    const response = await apiClient.post<ApiResponse<AuthResponse>>(
+  async register(data: RegisterData): Promise<RegisterResponse> {
+    const response = await apiClient.post<ApiResponse<RegisterResponse>>(
       "/auth/register",
       data
+    );
+    return response.data.data;
+  }
+
+  async verifyEmail(email: string, code: string): Promise<VerifyEmailResponse> {
+    const response = await apiClient.post<ApiResponse<VerifyEmailResponse>>(
+      "/auth/verify-email",
+      { email, code }
+    );
+    return response.data.data;
+  }
+
+  async resendVerificationCode(email: string): Promise<ResendCodeResponse> {
+    const response = await apiClient.post<ApiResponse<ResendCodeResponse>>(
+      "/auth/resend-verification",
+      { email }
     );
     return response.data.data;
   }

@@ -3,18 +3,23 @@ import { watch, onMounted } from "vue";
 import { useTheme } from "./shared/hooks/useTheme";
 import { useLanguage } from "./shared/hooks/useLanguage";
 import { useTranslations } from "./shared/hooks/useTranslations";
+import { useAuth } from "./features/auth/composables/useAuth";
 
 const { isDark } = useTheme();
 const { currentLanguage } = useLanguage();
 const { t } = useTranslations();
+const { initializeAuth } = useAuth();
 
 // Update document title when language changes
 const updateDocumentTitle = () => {
   document.title = t.value("documentTitle");
 };
 
-onMounted(() => {
+onMounted(async () => {
   updateDocumentTitle();
+
+  // Initialize authentication state from localStorage
+  await initializeAuth();
 });
 
 watch(currentLanguage, () => {

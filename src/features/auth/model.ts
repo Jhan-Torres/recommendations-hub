@@ -50,3 +50,25 @@ export interface AuthResponse {
   user: UserProfile;
   token: string;
 }
+
+export interface VerifyEmailData {
+  email: string;
+  code: string;
+}
+
+export interface VerifyEmailResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface ResendCodeResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface RegisterResponse {
+  user: UserProfile;
+  token?: string; // Optional for cases where email verification is required first
+  emailVerificationRequired?: boolean;
+  message?: string;
+}
