@@ -6,23 +6,18 @@
     <!-- Side Menu -->
     <aside
       @click.stop
-      class="fixed left-0 top-0 h-full w-80 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-r border-gray-200/50 dark:border-gray-700/50 transform transition-transform duration-300 ease-in-out"
+      class="fixed left-0 top-0 h-full w-80 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-r border-gray-200/50 dark:border-gray-700/50 transform transition-transform duration-300 ease-in-out flex flex-col"
       :class="isOpen ? 'translate-x-0' : '-translate-x-full'"
     >
       <!-- Header -->
       <div class="p-4 border-b border-gray-200/50 dark:border-gray-700/50">
         <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-3">
+          <div class="flex items-center">
             <img
               src="/vlur-logo.webp"
               alt="Vlur Logo"
               class="h-8 w-8 object-cover rounded-full"
             />
-            <h2
-              class="text-lg font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"
-            >
-              {{ t("appName") }}
-            </h2>
           </div>
           <button
             @click="closeMenu"
@@ -76,11 +71,11 @@
           <!-- Recommendations -->
           <li>
             <button
-              @click="navigateTo('/vlur-app')"
+              @click="navigateTo('/recommendations')"
               class="w-full flex items-center space-x-3 px-3 py-2 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               :class="{
                 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400':
-                  currentRoute === '/vlur-app',
+                  currentRoute === '/recommendations',
               }"
             >
               <Star class="h-5 w-5" />
@@ -102,27 +97,11 @@
               <span>Watch List</span>
             </button>
           </li>
-
-          <!-- Community -->
-          <li>
-            <button
-              @click="navigateTo('/vlur-community')"
-              class="w-full flex items-center space-x-3 px-3 py-2 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              :class="{
-                'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400':
-                  currentRoute === '/vlur-community',
-              }"
-            >
-              <Users class="h-5 w-5" />
-              <span>Community</span>
-            </button>
-          </li>
         </ul>
       </nav>
 
-      <!-- Settings & Logout -->
+      <!-- Settings -->
       <div class="p-4 border-t border-gray-200/50 dark:border-gray-700/50">
-        <!-- Settings -->
         <div class="flex items-center justify-between mb-3">
           <span class="text-sm font-medium text-gray-700 dark:text-gray-300"
             >Settings</span
@@ -133,24 +112,28 @@
           </div>
         </div>
 
-        <!-- Logout (if authenticated) -->
-        <button
-          v-if="isAuthenticated"
-          @click="handleLogout"
-          class="w-full flex items-center space-x-3 px-3 py-2 text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-        >
-          <LogOut class="h-5 w-5" />
-          <span>{{ t("logout") }}</span>
-        </button>
-
         <!-- Login (if not authenticated) -->
         <button
-          v-else
+          v-if="!isAuthenticated"
           @click="openAuthModal"
           class="w-full flex items-center space-x-3 px-3 py-2 text-left text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
         >
           <LogIn class="h-5 w-5" />
           <span>{{ t("login") }}</span>
+        </button>
+      </div>
+
+      <!-- Logout (at bottom) -->
+      <div
+        v-if="isAuthenticated"
+        class="p-4 border-t border-gray-200/50 dark:border-gray-700/50 mt-auto"
+      >
+        <button
+          @click="handleLogout"
+          class="w-full flex items-center space-x-3 px-3 py-2 text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+        >
+          <LogOut class="h-5 w-5" />
+          <span>{{ t("logout") }}</span>
         </button>
       </div>
     </aside>
@@ -166,7 +149,6 @@ import {
   UserCircle,
   Star,
   Clock,
-  Users,
   LogOut,
   LogIn,
 } from "lucide-vue-next";

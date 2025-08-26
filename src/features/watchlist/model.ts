@@ -12,6 +12,7 @@ export interface WatchListItem {
     description: string;
     category: string;
     priority: "low" | "medium" | "high";
+    rating?: number | string;
   };
 }
 

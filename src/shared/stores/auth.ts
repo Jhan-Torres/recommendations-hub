@@ -51,7 +51,9 @@ export const useAuthStore = defineStore("auth", () => {
 
     try {
       const registerData: RegisterData = { name, email, password };
-      const response: RegisterResponse = await authService.register(registerData);
+      const response: RegisterResponse = await authService.register(
+        registerData
+      );
 
       // If email verification is required, don't set token yet
       if (response.emailVerificationRequired) {
@@ -194,8 +196,11 @@ export const useAuthStore = defineStore("auth", () => {
     error.value = null;
 
     try {
-      const response: VerifyEmailResponse = await authService.verifyEmail(email, code);
-      
+      const response: VerifyEmailResponse = await authService.verifyEmail(
+        email,
+        code
+      );
+
       if (response.success) {
         // After successful verification, we should get the user profile and token
         // For now, we'll just return success - the backend should handle the token generation
@@ -216,10 +221,12 @@ export const useAuthStore = defineStore("auth", () => {
     error.value = null;
 
     try {
-      const response: ResendCodeResponse = await authService.resendVerificationCode(email);
+      const response: ResendCodeResponse =
+        await authService.resendVerificationCode(email);
       return response;
     } catch (err: any) {
-      error.value = err.response?.data?.message || "Failed to resend verification code";
+      error.value =
+        err.response?.data?.message || "Failed to resend verification code";
       throw new Error(error.value || "Failed to resend verification code");
     } finally {
       isLoading.value = false;

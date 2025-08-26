@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LandingPage from "../features/landing/components/LandingPage.vue";
 import RecommendationsPage from "../features/recommendations/components/RecommendationsPage.vue";
-import CommunityPage from "../features/community/components/CommunityPage.vue";
 import WatchListPage from "../features/watchlist/components/WatchListPage.vue";
 import ProfilePage from "../features/auth/components/ProfilePage.vue";
 
@@ -12,7 +11,7 @@ const routes = [
     component: LandingPage,
   },
   {
-    path: "/vlur-app",
+    path: "/recommendations",
     name: "Recommendations",
     component: RecommendationsPage,
     meta: { requiresAuth: false }, // Allow access but show login prompts for features
@@ -29,20 +28,18 @@ const routes = [
     component: ProfilePage,
     meta: { requiresAuth: true },
   },
-  {
-    path: "/vlur-community",
-    name: "Community",
-    component: CommunityPage,
-    meta: { requiresAuth: false }, // Allow access but show login prompts for features
-  },
   // Redirect old URLs to new ones for backward compatibility
   {
-    path: "/recommendations",
-    redirect: "/vlur-app",
+    path: "/vlur-app",
+    redirect: "/recommendations",
+  },
+  {
+    path: "/vlur-community",
+    redirect: "/",
   },
   {
     path: "/community",
-    redirect: "/vlur-community",
+    redirect: "/",
   },
   // Redirect any unknown routes to landing
   {

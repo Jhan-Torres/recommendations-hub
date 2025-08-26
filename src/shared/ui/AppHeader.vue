@@ -1,14 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import {
-  Home,
-  ChevronDown,
-  X,
-  UserPlus,
-  User,
-  Menu,
-} from "lucide-vue-next";
+import { Home, ChevronDown, X, UserPlus, User, Menu } from "lucide-vue-next";
 import ThemeToggle from "./ThemeToggle.vue";
 import LanguageSelector from "./LanguageSelector.vue";
 import SideMenu from "./SideMenu.vue";
@@ -87,7 +80,7 @@ const closeAuthModal = () => {
 
 // Navigation functions
 const goToLanding = () => router.push("/");
-const goToRecommendations = () => router.push("/vlur-app");
+const goToRecommendations = () => router.push("/recommendations");
 
 // Computed properties to determine which buttons to show
 const isOnLanding = computed(() => route.name === "Landing");
@@ -113,15 +106,11 @@ const isOnCommunity = computed(() => route.name === "Community");
           <!-- App Name/Logo -->
           <button
             @click="goToLanding"
-            class="relative overflow-hidden rounded-lg px-3 py-2 hover:scale-105 transition-all duration-300 group"
+            class="px-3 py-2 hover:scale-105 transition-all duration-300"
           >
-            <!-- Animated Background -->
-            <div class="absolute inset-0 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-900/20 dark:via-indigo-900/20 dark:to-purple-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div class="absolute inset-0 bg-gradient-to-r from-blue-100/50 via-transparent to-indigo-100/50 dark:from-blue-800/30 dark:via-transparent dark:to-indigo-800/30 animate-pulse"></div>
-            
-            <!-- App Name Text -->
+            <!-- App Name Text with animated gradient -->
             <h1
-              class="relative text-lg font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 bg-clip-text text-transparent sm:text-xl md:text-2xl lg:text-3xl bg-[length:200%_100%] animate-gradient"
+              class="text-lg font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 bg-clip-text text-transparent sm:text-xl md:text-2xl lg:text-3xl bg-[length:200%_100%] animate-gradient"
             >
               {{ t("appName") }}
             </h1>
@@ -167,7 +156,10 @@ const isOnCommunity = computed(() => route.name === "Community");
           <!-- Authenticated User Section -->
           <template v-if="isAuthenticated">
             <!-- User Profile Section -->
-            <div v-if="user" class="hidden sm:flex items-center space-x-2 px-3 py-2 bg-white/70 text-gray-700 rounded-lg border border-gray-200/50 dark:bg-gray-800/70 dark:text-gray-300 dark:border-gray-700/50">
+            <div
+              v-if="user"
+              class="hidden sm:flex items-center space-x-2 px-3 py-2 bg-white/70 text-gray-700 rounded-lg border border-gray-200/50 dark:bg-gray-800/70 dark:text-gray-300 dark:border-gray-700/50"
+            >
               <User class="h-4 w-4" />
               <span class="text-sm font-medium">
                 {{ user.name }}
