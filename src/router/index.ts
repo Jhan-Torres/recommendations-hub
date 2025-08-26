@@ -10,16 +10,25 @@ const routes = [
     component: LandingPage,
   },
   {
-    path: "/recommendations",
+    path: "/vlur-app",
     name: "Recommendations",
     component: RecommendationsPage,
     meta: { requiresAuth: false }, // Allow access but show login prompts for features
   },
   {
-    path: "/community",
+    path: "/vlur-community",
     name: "Community",
     component: CommunityPage,
     meta: { requiresAuth: false }, // Allow access but show login prompts for features
+  },
+  // Redirect old URLs to new ones for backward compatibility
+  {
+    path: "/recommendations",
+    redirect: "/vlur-app",
+  },
+  {
+    path: "/community",
+    redirect: "/vlur-community",
   },
   // Redirect any unknown routes to landing
   {

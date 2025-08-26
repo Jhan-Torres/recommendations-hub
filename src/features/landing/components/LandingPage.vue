@@ -18,8 +18,8 @@ const showAuthModal = ref(false);
 const authMode = ref<"login" | "signup">("signup");
 
 // Navigation functions
-const goToRecommendations = () => router.push("/recommendations");
-const goToCommunity = () => router.push("/community");
+const goToRecommendations = () => router.push("/vlur-app");
+const goToCommunity = () => router.push("/vlur-community");
 
 // Handle get started click
 const handleGetStarted = () => {

@@ -83,8 +83,8 @@ const handleLogout = async () => {
 
 // Navigation functions
 const goToLanding = () => router.push("/");
-const goToRecommendations = () => router.push("/recommendations");
-const goToCommunity = () => router.push("/community");
+const goToRecommendations = () => router.push("/vlur-app");
+const goToCommunity = () => router.push("/vlur-community");
 
 // Computed properties to determine which buttons to show
 const isOnLanding = computed(() => route.name === "Landing");
