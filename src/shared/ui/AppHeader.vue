@@ -2,44 +2,61 @@
 import { computed, ref, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import {
-  Users,
   Home,
   ChevronDown,
   X,
   UserPlus,
   User,
-  LogOut,
+  Menu,
 } from "lucide-vue-next";
 import ThemeToggle from "./ThemeToggle.vue";
 import LanguageSelector from "./LanguageSelector.vue";
+import SideMenu from "./SideMenu.vue";
 import { useTranslations } from "../hooks/useTranslations";
 import { useAuth } from "../../features/auth/composables/useAuth";
 import AuthContainer from "../../features/auth/components/AuthContainer.vue";
 
 interface Props {
   hasRecommendations?: boolean;
+  hasWatchListItems?: boolean;
   showMenu?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
   hasRecommendations: false,
+  hasWatchListItems: false,
   showMenu: false,
 });
 
 const { t } = useTranslations();
 const route = useRoute();
 const router = useRouter();
-const { user, isAuthenticated, logout } = useAuth();
+const { user, isAuthenticated } = useAuth();
 
 // Menu state
 const isMenuOpen = ref(false);
+const isSideMenuOpen = ref(false);
 const showAuthModal = ref(false);
 const authMode = ref<"login" | "signup">("login");
 
 // Toggle menu function
 const toggleMenu = (event: Event) => {
   event.stopPropagation();
-  isMenuOpen.value = !isMenuOpen.value;
+  if (isAuthenticated.value) {
+    isSideMenuOpen.value = !isSideMenuOpen.value;
+  } else {
+    isMenuOpen.value = !isMenuOpen.value;
+  }
+};
+
+// Close menus
+const closeSideMenu = () => {
+  isSideMenuOpen.value = false;
+};
+
+const openAuthFromSideMenu = () => {
+  authMode.value = "login";
+  showAuthModal.value = true;
 };
 
 // Close menu when clicking outside
@@ -68,27 +85,12 @@ const closeAuthModal = () => {
   showAuthModal.value = false;
 };
 
-const handleLogout = async () => {
-  try {
-    await logout();
-    isMenuOpen.value = false;
-    // Redirect to landing page after logout
-    if (route.name !== "Landing") {
-      router.push("/");
-    }
-  } catch (error) {
-    console.error("Logout failed:", error);
-  }
-};
-
 // Navigation functions
 const goToLanding = () => router.push("/");
 const goToRecommendations = () => router.push("/vlur-app");
-const goToCommunity = () => router.push("/vlur-community");
 
 // Computed properties to determine which buttons to show
 const isOnLanding = computed(() => route.name === "Landing");
-const isOnRecommendations = computed(() => route.name === "Recommendations");
 const isOnCommunity = computed(() => route.name === "Community");
 </script>
 
@@ -96,33 +98,39 @@ const isOnCommunity = computed(() => route.name === "Community");
   <header class="header-nav">
     <div class="container-main">
       <div class="header-container">
-        <button
-          @click="goToLanding"
-          class="flex items-center space-x-2 sm:space-x-3 hover:opacity-80 transition-opacity duration-200"
-        >
-          <img
-            src="/vlur-logo.webp"
-            alt="Vlur Logo"
-            class="h-8 w-8 object-cover rounded-full sm:h-10 sm:w-10 md:h-12 md:w-12"
-          />
-          <h1
-            class="text-base font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent sm:text-lg md:text-xl"
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          <!-- Hamburger Menu Button (when authenticated) -->
+          <button
+            v-if="isAuthenticated"
+            @click="toggleMenu"
+            class="p-2 bg-white/70 text-gray-700 rounded-lg font-medium hover:bg-white transition-all duration-200 border border-gray-200/50 dark:bg-gray-800/70 dark:text-gray-300 dark:hover:bg-gray-800 dark:border-gray-700/50 cursor-pointer"
+            type="button"
+            :title="`Menu ${user?.name ? '- ' + user.name : ''}`"
           >
-            {{ t("appName") }}
-          </h1>
-        </button>
+            <Menu class="h-5 w-5" />
+          </button>
+
+          <!-- App Name/Logo -->
+          <button
+            @click="goToLanding"
+            class="relative overflow-hidden rounded-lg px-3 py-2 hover:scale-105 transition-all duration-300 group"
+          >
+            <!-- Animated Background -->
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-900/20 dark:via-indigo-900/20 dark:to-purple-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-100/50 via-transparent to-indigo-100/50 dark:from-blue-800/30 dark:via-transparent dark:to-indigo-800/30 animate-pulse"></div>
+            
+            <!-- App Name Text -->
+            <h1
+              class="relative text-lg font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 bg-clip-text text-transparent sm:text-xl md:text-2xl lg:text-3xl bg-[length:200%_100%] animate-gradient"
+            >
+              {{ t("appName") }}
+            </h1>
+          </button>
+        </div>
 
         <div class="flex items-center space-x-1 sm:space-x-2">
-          <!-- Landing Page: Show Community and Get Started buttons, or Back to App if has recommendations -->
+          <!-- Landing Page: Show Get Started button if not authenticated, or Back to App if has recommendations -->
           <template v-if="isOnLanding">
-            <button
-              @click="goToCommunity"
-              class="px-2 py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-200 shadow-lg flex items-center space-x-1 text-xs sm:px-3 sm:py-2 sm:text-sm"
-            >
-              <Users class="h-3 w-3 sm:h-4 sm:w-4" />
-              <span class="hidden lg:inline">{{ t("community") }}</span>
-            </button>
-
             <!-- Show Back to App if user is authenticated or has recommendations -->
             <button
               v-if="isAuthenticated || hasRecommendations"
@@ -145,18 +153,7 @@ const isOnCommunity = computed(() => route.name === "Community");
             </template>
           </template>
 
-          <!-- Recommendations Page: Show Community button -->
-          <template v-else-if="isOnRecommendations">
-            <button
-              @click="goToCommunity"
-              class="px-2 py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-200 shadow-lg flex items-center space-x-1 text-xs sm:px-3 sm:py-2 sm:text-sm"
-            >
-              <Users class="h-3 w-3 sm:h-4 sm:w-4" />
-              <span class="hidden lg:inline">{{ t("community") }}</span>
-            </button>
-          </template>
-
-          <!-- Community Page: Show Back to App button -->
+          <!-- Other Pages: Show Back to App button if on Community page -->
           <template v-else-if="isOnCommunity">
             <button
               @click="goToRecommendations"
@@ -167,20 +164,25 @@ const isOnCommunity = computed(() => route.name === "Community");
             </button>
           </template>
 
-          <!-- User Menu (when authenticated) or Settings Menu -->
-          <div class="relative menu-container">
+          <!-- Authenticated User Section -->
+          <template v-if="isAuthenticated">
+            <!-- User Profile Section -->
+            <div v-if="user" class="hidden sm:flex items-center space-x-2 px-3 py-2 bg-white/70 text-gray-700 rounded-lg border border-gray-200/50 dark:bg-gray-800/70 dark:text-gray-300 dark:border-gray-700/50">
+              <User class="h-4 w-4" />
+              <span class="text-sm font-medium">
+                {{ user.name }}
+              </span>
+            </div>
+          </template>
+
+          <!-- Guest Menu (when not authenticated) -->
+          <div v-else class="relative menu-container">
             <button
               @click="toggleMenu"
               class="p-2 bg-white/70 text-gray-700 rounded-lg font-medium hover:bg-white transition-all duration-200 border border-gray-200/50 dark:bg-gray-800/70 dark:text-gray-300 dark:hover:bg-gray-800 dark:border-gray-700/50 cursor-pointer flex items-center space-x-2"
               type="button"
             >
-              <User v-if="isAuthenticated" class="h-4 w-4" />
-              <span
-                v-if="isAuthenticated && user"
-                class="hidden sm:inline text-sm"
-              >
-                {{ user.name }}
-              </span>
+              <User class="h-4 w-4" />
               <ChevronDown
                 v-if="!isMenuOpen"
                 class="h-4 w-4 pointer-events-none"
@@ -188,31 +190,12 @@ const isOnCommunity = computed(() => route.name === "Community");
               <X v-else class="h-4 w-4 pointer-events-none" />
             </button>
 
-            <!-- Dropdown Menu -->
+            <!-- Dropdown Menu (only for guests) -->
             <div
               v-if="isMenuOpen"
               class="absolute right-0 top-12 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md rounded-lg shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-3 min-w-[150px] z-50"
             >
-              <!-- Authenticated User Menu -->
-              <div v-if="isAuthenticated" class="space-y-2">
-                <div
-                  class="flex items-center justify-between space-x-4 pb-2 border-b border-gray-200 dark:border-gray-700"
-                >
-                  <LanguageSelector />
-                  <ThemeToggle />
-                </div>
-
-                <button
-                  @click="handleLogout"
-                  class="w-full flex items-center space-x-2 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                >
-                  <LogOut class="h-4 w-4" />
-                  <span>{{ t("logout") }}</span>
-                </button>
-              </div>
-
-              <!-- Guest User Menu -->
-              <div v-else class="space-y-2">
+              <div class="space-y-2">
                 <div class="flex items-center justify-between space-x-4">
                   <LanguageSelector />
                   <ThemeToggle />
@@ -225,6 +208,13 @@ const isOnCommunity = computed(() => route.name === "Community");
     </div>
   </header>
 
+  <!-- Side Menu (for authenticated users) -->
+  <SideMenu
+    :is-open="isSideMenuOpen"
+    @close="closeSideMenu"
+    @open-auth="openAuthFromSideMenu"
+  />
+
   <!-- Auth Modal -->
   <AuthContainer
     :show="showAuthModal"
@@ -232,3 +222,21 @@ const isOnCommunity = computed(() => route.name === "Community");
     @close="closeAuthModal"
   />
 </template>
+
+<style scoped>
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  animation: gradient 4s ease-in-out infinite;
+}
+</style>

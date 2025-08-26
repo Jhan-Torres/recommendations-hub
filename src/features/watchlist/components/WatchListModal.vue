@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { reactive, computed, watch } from "vue";
 import { Clock, X } from "lucide-vue-next";
-import type { WatchListItem } from "../model";
+import type { LegacyWatchListItem } from "../model";
 import { useTranslations } from "../../../shared/hooks/useTranslations";
+import { useScrollLock } from "../../../shared/composables/useScrollLock";
 
 const props = defineProps<{
   show: boolean;
@@ -10,10 +11,11 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   close: [];
-  addToWatchlist: [item: Omit<WatchListItem, "id" | "createdAt">];
+  addToWatchlist: [item: Omit<LegacyWatchListItem, "id" | "createdAt">];
 }>();
 
 const { t } = useTranslations();
+const { lock, unlock } = useScrollLock();
 
 const form = reactive({
   category: "",
@@ -65,12 +67,15 @@ const resetForm = () => {
   form.notes = "";
 };
 
-// Reset form when modal closes
+// Handle scroll lock and form reset
 watch(
   () => props.show,
   (newShow) => {
-    if (!newShow) {
+    if (newShow) {
+      lock();
       resetForm();
+    } else {
+      unlock();
     }
   }
 );
@@ -88,12 +93,8 @@ watch(
   (newShow) => {
     if (newShow) {
       document.addEventListener("keydown", handleEscape);
-      // Prevent body scroll
-      document.body.style.overflow = "hidden";
     } else {
       document.removeEventListener("keydown", handleEscape);
-      // Restore body scroll
-      document.body.style.overflow = "";
     }
   }
 );
@@ -109,42 +110,41 @@ watch(
     <!-- Modal Content -->
     <div
       @click.stop
-      class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl w-full max-w-sm sm:max-w-md shadow-2xl transform transition-all duration-300 my-4 max-h-[calc(100vh-2rem)] flex flex-col overflow-hidden"
+      class="bg-white dark:bg-gray-800 rounded-xl w-full max-w-sm shadow-2xl transform transition-all duration-300 my-4 max-h-[calc(100vh-2rem)] flex flex-col overflow-hidden"
       :class="show ? 'scale-100 opacity-100' : 'scale-95 opacity-0'"
     >
       <!-- Fixed Modal Header -->
       <header
-        class="flex items-center justify-between p-4 sm:p-6 pb-3 sm:pb-4 border-b border-gray-100 dark:border-gray-700 flex-shrink-0"
+        class="flex items-center justify-between p-3 pb-2 border-b border-gray-100 dark:border-gray-700 flex-shrink-0"
       >
         <h2
-          class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white flex items-center"
+          class="text-base font-semibold text-gray-900 dark:text-white flex items-center"
         >
-          <Clock class="h-4 w-4 sm:h-5 sm:w-5 mr-2 flex-shrink-0" />
-          <span class="hidden sm:inline">{{ t("addToWatchList") }}</span>
-          <span class="sm:hidden">{{ t("addToWatch") }}</span>
+          <Clock class="h-4 w-4 mr-2 flex-shrink-0" />
+          <span>{{ t("addToWatchList") }}</span>
         </h2>
         <button
           @click="$emit('close')"
-          class="p-1.5 sm:p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors flex-shrink-0"
+          class="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors flex-shrink-0"
         >
-          <X class="h-4 w-4 sm:h-5 sm:w-5" />
+          <X class="h-4 w-4" />
         </button>
       </header>
 
       <!-- Scrollable Form Content -->
       <main class="flex-1 overflow-y-auto">
-        <div class="p-4 sm:p-6 pt-3 sm:pt-4">
+        <div class="p-3 pt-2">
           <!-- Form -->
-          <form @submit.prevent="submitForm" class="space-y-3 sm:space-y-4">
+          <form @submit.prevent="submitForm" class="space-y-2.5">
             <div>
               <label
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
                 {{ t("category") }}
               </label>
               <select
                 v-model="form.category"
-                class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
+                class="w-full px-2.5 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
                 required
               >
                 <option value="">{{ t("selectCategory") }}</option>
@@ -156,14 +156,14 @@ watch(
 
             <div>
               <label
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
                 {{ t("name") }}
               </label>
               <input
                 v-model="form.name"
                 type="text"
-                class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
+                class="w-full px-2.5 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
                 :placeholder="t('enterName')"
                 required
               />
@@ -171,13 +171,13 @@ watch(
 
             <div>
               <label
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
                 {{ t("genre") }}
               </label>
               <select
                 v-model="form.genre"
-                class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
+                class="w-full px-2.5 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
                 required
               >
                 <option value="">{{ t("selectGenre") }}</option>
@@ -193,13 +193,13 @@ watch(
 
             <div>
               <label
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
                 {{ t("priority") }}
               </label>
               <select
                 v-model="form.priority"
-                class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
+                class="w-full px-2.5 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
                 required
               >
                 <option value="high">{{ t("high") }}</option>
@@ -210,15 +210,15 @@ watch(
 
             <div>
               <label
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
                 {{ t("notes") }}
-                <span class="text-gray-400">({{ t("optional") }})</span>
+                <span class="text-gray-400 text-xs">({{ t("optional") }})</span>
               </label>
               <textarea
                 v-model="form.notes"
-                rows="3"
-                class="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors resize-none"
+                rows="2"
+                class="w-full px-2.5 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors resize-none"
                 :placeholder="t('addNotes')"
               ></textarea>
             </div>
@@ -228,13 +228,13 @@ watch(
 
       <!-- Fixed Form Actions at bottom -->
       <footer
-        class="p-4 sm:p-6 pt-3 sm:pt-4 border-t border-gray-100 dark:border-gray-700 flex-shrink-0"
+        class="p-3 pt-2 border-t border-gray-100 dark:border-gray-700 flex-shrink-0"
       >
-        <div class="flex space-x-2 sm:space-x-3">
+        <div class="flex space-x-2">
           <button
             type="button"
             @click="$emit('close')"
-            class="flex-1 px-3 sm:px-4 py-2 text-sm sm:text-base text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            class="flex-1 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
           >
             {{ t("cancel") }}
           </button>
@@ -242,9 +242,9 @@ watch(
             type="submit"
             @click="submitForm"
             :disabled="!isFormValid"
-            class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-2 px-3 sm:px-4 rounded-lg font-medium text-sm sm:text-base hover:from-indigo-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-200 shadow-lg flex items-center justify-center"
+            class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-1.5 px-3 rounded-lg font-medium text-sm hover:from-indigo-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-200 shadow-lg flex items-center justify-center"
           >
-            <Clock class="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+            <Clock class="h-3 w-3 mr-1 flex-shrink-0" />
             <span>{{ t("addToWatch") }}</span>
           </button>
         </div>

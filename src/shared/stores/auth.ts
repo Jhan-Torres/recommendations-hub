@@ -127,25 +127,43 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   const initializeAuth = async () => {
-    const savedToken = localStorage.getItem("auth_token");
-    const savedUser = localStorage.getItem("auth_user");
+    // Temporary: Simulate being logged in for testing
+    const mockUser = {
+      id: "test-user-123",
+      name: "John Doe",
+      email: "john.doe@example.com",
+      avatar: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    const mockToken = "mock-jwt-token-123";
 
-    if (savedToken && savedUser) {
-      try {
-        token.value = savedToken;
-        user.value = JSON.parse(savedUser);
+    // Set mock data
+    token.value = mockToken;
+    user.value = mockUser;
+    localStorage.setItem("auth_token", mockToken);
+    localStorage.setItem("auth_user", JSON.stringify(mockUser));
 
-        // Verify token is still valid by fetching current user
-        await getCurrentUser();
-      } catch (error) {
-        console.error("Failed to initialize auth:", error);
-        // Clear invalid auth data
-        localStorage.removeItem("auth_token");
-        localStorage.removeItem("auth_user");
-        token.value = null;
-        user.value = null;
-      }
-    }
+    // Original code (commented out for testing):
+    // const savedToken = localStorage.getItem("auth_token");
+    // const savedUser = localStorage.getItem("auth_user");
+
+    // if (savedToken && savedUser) {
+    //   try {
+    //     token.value = savedToken;
+    //     user.value = JSON.parse(savedUser);
+
+    //     // Verify token is still valid by fetching current user
+    //     await getCurrentUser();
+    //   } catch (error) {
+    //     console.error("Failed to initialize auth:", error);
+    //     // Clear invalid auth data
+    //     localStorage.removeItem("auth_token");
+    //     localStorage.removeItem("auth_user");
+    //     token.value = null;
+    //     user.value = null;
+    //   }
+    // }
   };
 
   const updateProfile = async (data: Partial<UserProfile>) => {

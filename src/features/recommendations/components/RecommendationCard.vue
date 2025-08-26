@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { Film, Tv, Sparkles, Star, Trash2, Eye } from "lucide-vue-next";
-import type { Recommendation } from "../model";
+import type { LegacyRecommendation } from "../model";
 import { useTranslations } from "../../../shared/hooks/useTranslations";
 import { formatDate } from "../../../shared/utils/formatDate";
 
 const props = defineProps<{
-  recommendation: Recommendation;
+  recommendation: LegacyRecommendation;
 }>();
 
 defineEmits<{
   delete: [id: string];
-  view: [recommendation: Recommendation];
+  view: [recommendation: LegacyRecommendation];
 }>();
 
 const { t } = useTranslations();

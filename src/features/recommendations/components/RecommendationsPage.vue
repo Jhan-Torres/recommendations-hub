@@ -2,19 +2,15 @@
 import { ref, computed } from "vue";
 import RecommendationModal from "./RecommendationModal.vue";
 import RecommendationDetailModal from "./RecommendationDetailModal.vue";
-import WatchListModal from "../../watchlist/components/WatchListModal.vue";
 import AppHeader from "../../../shared/ui/AppHeader.vue";
 import RecommendationsStats from "./RecommendationsStats.vue";
 import RecommendationsContent from "./RecommendationsContent.vue";
 import { useRecommendations } from "../useRecommendations";
-import { useWatchList } from "../../watchlist/useWatchList";
 import { useSearch } from "../useSearch";
-import type { Recommendation } from "../model";
+import type { LegacyRecommendation } from "../model";
 
 const { recommendations, addRecommendation, deleteRecommendation } =
   useRecommendations();
-const { watchList, addToWatchList, deleteWatchListItem, markAsWatched } =
-  useWatchList();
 const { selectedCategory, filteredRecommendations } =
   useSearch(recommendations);
 
@@ -31,11 +27,10 @@ const hasRecommendations = computed((): boolean => {
 });
 
 const showRecommendationModal = ref(false);
-const showWatchListModal = ref(false);
 const showDetailModal = ref(false);
-const selectedRecommendation = ref<Recommendation | null>(null);
+const selectedRecommendation = ref<LegacyRecommendation | null>(null);
 
-const viewRecommendation = (recommendation: Recommendation) => {
+const viewRecommendation = (recommendation: LegacyRecommendation) => {
   selectedRecommendation.value = recommendation;
   showDetailModal.value = true;
 };
@@ -55,16 +50,12 @@ const viewRecommendation = (recommendation: Recommendation) => {
       <!-- Content Section -->
       <RecommendationsContent
         :recommendations="recommendations"
-        :watch-list="watchList"
         :filtered-recommendations="filteredRecommendations"
         :selected-category="selectedCategory"
         @delete-recommendation="deleteRecommendation"
         @view-recommendation="viewRecommendation"
         @update:selected-category="selectedCategory = $event"
         @show-recommendation-modal="showRecommendationModal = true"
-        @show-watchlist-modal="showWatchListModal = true"
-        @mark-as-watched="markAsWatched"
-        @delete-watchlist-item="deleteWatchListItem"
       />
     </main>
 
@@ -73,12 +64,6 @@ const viewRecommendation = (recommendation: Recommendation) => {
       :show="showRecommendationModal"
       @close="showRecommendationModal = false"
       @addRecommendation="addRecommendation"
-    />
-
-    <WatchListModal
-      :show="showWatchListModal"
-      @close="showWatchListModal = false"
-      @addToWatchlist="addToWatchList"
     />
 
     <RecommendationDetailModal

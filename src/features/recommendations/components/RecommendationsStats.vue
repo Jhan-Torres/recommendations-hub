@@ -3,10 +3,10 @@ import { computed } from "vue";
 import { BarChart3, Film, Tv, Sparkles } from "lucide-vue-next";
 import StatsCard from "../../../shared/ui/StatsCard.vue";
 import { useTranslations } from "../../../shared/hooks/useTranslations";
-import type { Recommendation } from "../model";
+import type { LegacyRecommendation } from "../model";
 
 interface Props {
-  recommendations: Recommendation[];
+  recommendations: LegacyRecommendation[];
 }
 
 const props = defineProps<Props>();

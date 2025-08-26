@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import LandingPage from "../features/landing/components/LandingPage.vue";
 import RecommendationsPage from "../features/recommendations/components/RecommendationsPage.vue";
 import CommunityPage from "../features/community/components/CommunityPage.vue";
+import WatchListPage from "../features/watchlist/components/WatchListPage.vue";
+import ProfilePage from "../features/auth/components/ProfilePage.vue";
 
 const routes = [
   {
@@ -14,6 +16,18 @@ const routes = [
     name: "Recommendations",
     component: RecommendationsPage,
     meta: { requiresAuth: false }, // Allow access but show login prompts for features
+  },
+  {
+    path: "/watch-list",
+    name: "WatchList",
+    component: WatchListPage,
+    meta: { requiresAuth: false },
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: ProfilePage,
+    meta: { requiresAuth: true },
   },
   {
     path: "/vlur-community",

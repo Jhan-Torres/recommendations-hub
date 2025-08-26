@@ -13,8 +13,9 @@ import {
   Tv,
   Sparkles,
 } from "lucide-vue-next";
-import type { Recommendation } from "../model";
+import type { LegacyRecommendation } from "../model";
 import { useTranslations } from "../../../shared/hooks/useTranslations";
+import { useScrollLock } from "../../../shared/composables/useScrollLock";
 
 interface Comment {
   id: string;
@@ -27,14 +28,15 @@ interface Comment {
 
 const props = defineProps<{
   show: boolean;
-  recommendation: Recommendation | null;
+  recommendation: LegacyRecommendation | null;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   close: [];
 }>();
 
 const { t } = useTranslations();
+const { lock, unlock } = useScrollLock();
 
 // Modal state
 const isLiked = ref(false);
@@ -97,7 +99,7 @@ const categoryStyles = computed(() => {
       icon: Sparkles,
     },
   };
-  return styles[props.recommendation.category];
+  return styles[props.recommendation.category as keyof typeof styles];
 });
 
 const getGenreLabel = (genre: string) => {
@@ -169,22 +171,19 @@ const addComment = () => {
   newComment.value = "";
 };
 
-// Reset state when modal opens
+// Handle scroll lock and reset state when modal opens
 watch(
   () => props.show,
   (newShow) => {
     if (newShow) {
+      lock();
       isLiked.value = false;
       isSaved.value = Math.random() > 0.7; // 30% chance of being pre-saved
       likes.value = Math.floor(Math.random() * 50) + 10;
       generateMockComments();
       newComment.value = "";
-
-      // Prevent body scroll
-      document.body.style.overflow = "hidden";
     } else {
-      // Restore body scroll
-      document.body.style.overflow = "";
+      unlock();
     }
   }
 );
@@ -192,10 +191,11 @@ watch(
 // Handle escape key
 const handleEscape = (e: KeyboardEvent) => {
   if (e.key === "Escape" && props.show) {
-    props.show && document.dispatchEvent(new CustomEvent("close-modal"));
+    emit("close");
   }
 };
 
+// Add escape key listener when modal is shown
 watch(
   () => props.show,
   (newShow) => {
