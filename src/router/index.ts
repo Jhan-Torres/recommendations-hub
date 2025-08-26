@@ -3,6 +3,7 @@ import LandingPage from "../features/landing/components/LandingPage.vue";
 import RecommendationsPage from "../features/recommendations/components/RecommendationsPage.vue";
 import WatchListPage from "../features/watchlist/components/WatchListPage.vue";
 import ProfilePage from "../features/auth/components/ProfilePage.vue";
+import CommunityPage from "../features/community/components/CommunityPage.vue";
 
 const routes = [
   {
@@ -27,6 +28,12 @@ const routes = [
     name: "Profile",
     component: ProfilePage,
     meta: { requiresAuth: true },
+  },
+  {
+    path: "/community",
+    name: "Community",
+    component: CommunityPage,
+    meta: { requiresAuth: false },
   },
   // Redirect old URLs to new ones for backward compatibility
   {

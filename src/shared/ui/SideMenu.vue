@@ -97,6 +97,21 @@
               <span>Watch List</span>
             </button>
           </li>
+
+          <!-- Community -->
+          <li>
+            <button
+              @click="navigateTo('/community')"
+              class="w-full flex items-center space-x-3 px-3 py-2 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              :class="{
+                'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400':
+                  currentRoute === '/community',
+              }"
+            >
+              <Users class="h-5 w-5" />
+              <span>Community</span>
+            </button>
+          </li>
         </ul>
       </nav>
 
@@ -149,6 +164,7 @@ import {
   UserCircle,
   Star,
   Clock,
+  Users,
   LogOut,
   LogIn,
 } from "lucide-vue-next";

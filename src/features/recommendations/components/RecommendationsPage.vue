@@ -44,6 +44,18 @@ const viewRecommendation = (recommendation: LegacyRecommendation) => {
     <AppHeader :has-recommendations="hasRecommendations" />
 
     <main class="max-w-7xl mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <!-- Page Title -->
+      <div class="mb-8">
+        <h1
+          class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2"
+        >
+          Recommendations
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Discover and manage your personalized content recommendations
+        </p>
+      </div>
+
       <!-- Stats Section -->
       <RecommendationsStats :recommendations="recommendations" />
 

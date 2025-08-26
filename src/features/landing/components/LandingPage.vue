@@ -19,7 +19,7 @@ const authMode = ref<"login" | "signup">("signup");
 
 // Navigation functions
 const goToRecommendations = () => router.push("/recommendations");
-const goToCommunity = () => router.push("/recommendations");
+const goToCommunity = () => router.push("/community");
 
 // Handle get started click
 const handleGetStarted = () => {

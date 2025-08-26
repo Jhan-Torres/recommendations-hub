@@ -5,7 +5,7 @@
     >
       <div>
         <h1
-          class="text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl md:text-4xl"
+          class="text-3xl font-bold text-gray-900 dark:text-white md:text-4xl"
         >
           Watch List
         </h1>
